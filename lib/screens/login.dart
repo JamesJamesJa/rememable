@@ -1,145 +1,172 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rememable/screens/home.dart';
+import 'package:rememable/screens/pre-home.dart';
 
 class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Align(
-            alignment: Alignment.center,
-            child: Container(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/bg-color.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Column(
+          children: <Widget>[
+            Container(
+              alignment: Alignment.center,
               margin: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.18),
+                  top: MediaQuery.of(context).size.height * 0.12),
               child: Image.asset(
                 'images/logo.png',
                 height: 180,
                 width: 180,
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              child: Text("Login",
+            Container(
+              alignment: Alignment.center,
+              child: Text("Sign in",
                   style: GoogleFonts.montserrat(
                       textStyle: TextStyle(
-                          color: Color(0xFF8E8E93),
-                          fontSize: 34.0,
-                          fontWeight: FontWeight.w300))),
+                          color: Color(0xFF687E9E),
+                          fontSize: 26.0,
+                          fontWeight: FontWeight.w400))),
             ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Container(
+            Container(
+              alignment: Alignment.center,
               margin: EdgeInsets.only(top: 10.0),
-              child: Text("Welcome back to Kalena,\n  Please select your roles",
+              child: Text("to continue to Rememable",
                   style: GoogleFonts.montserrat(
                       textStyle: TextStyle(
-                          color: Color(0xFF8675A9),
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.w300))),
+                          color: Color(0xFF687E9E),
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400))),
             ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.6,
-              margin: EdgeInsets.only(top: 50.0),
-              child: OutlinedButton(
-                onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => StudentPage()),
-                  // );
+            Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: 50,
+              margin: EdgeInsets.only(top: 30.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 7,
+                    offset: Offset(2, 3),
+                  ),
+                ],
+              ),
+              child: Container(
+                  padding: EdgeInsets.fromLTRB(10, 5, 20, 10),
+                  child: TextField(
+                    decoration: InputDecoration(
+                        icon: Container(
+                          padding: EdgeInsets.only(left: 10.0, top: 5),
+                          child: Icon(
+                            Icons.email,
+                            size: 20,
+                            color: Color(0xFF687E9E),
+                          ),
+                        ),
+                        border: InputBorder.none,
+                        hintText: 'Email',
+                        hintStyle: TextStyle(
+                          color: Color(0xFFC7C7CC),
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w300,
+                          fontFamily: 'Montserrat',
+                        ),
+                        contentPadding: EdgeInsets.only(bottom: 6.0)),
+                  )),
+            ),
+            Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: 50,
+              margin: EdgeInsets.only(top: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 7,
+                    offset: Offset(2, 3),
+                  ),
+                ],
+              ),
+              child: Container(
+                  padding: EdgeInsets.fromLTRB(10, 5, 20, 10),
+                  child: TextField(
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                        icon: Container(
+                          padding: EdgeInsets.only(left: 10.0, top: 5),
+                          child: Icon(
+                            Icons.vpn_key,
+                            size: 20,
+                            color: Color(0xFF687E9E),
+                          ),
+                        ),
+                        border: InputBorder.none,
+                        hintText: 'Password',
+                        hintStyle: TextStyle(
+                          color: Color(0xFFC7C7CC),
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w300,
+                          fontFamily: 'Montserrat',
+                        ),
+                        contentPadding: EdgeInsets.only(bottom: 6.0)),
+                  )),
+            ),
+            Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: 50,
+              margin: EdgeInsets.only(top: 60.0),
+              decoration: BoxDecoration(
+                color: Color(0xFF6C76C7),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 7,
+                    offset: Offset(2, 3),
+                  ),
+                ],
+              ),
+              child: GestureDetector(
+                child: Container(
+                    padding: EdgeInsets.only(left: 0, right: 10),
+                    child: Text(
+                      'Sign In',
+                      style: GoogleFonts.montserrat(
+                        textStyle: TextStyle(
+                          fontSize: 17,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    )),
+                onTap: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => PreHome()));
                 },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color(0xff9C8CBE)),
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      side: BorderSide(
-                          color: Colors.grey,
-                          width: 2,
-                          style: BorderStyle.solid),
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 10, 0, 10),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                          padding: const EdgeInsets.only(left: 0, right: 30),
-                          child: Text(
-                            'Student',
-                            style: GoogleFonts.montserrat(
-                              textStyle: TextStyle(
-                                fontSize: 17,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          )),
-                    ],
-                  ),
-                ),
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.6,
-              margin: EdgeInsets.only(top: 10.0),
-              child: OutlinedButton(
-                onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => FirstCome()),
-                  // );
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color(0xff9C8CBE)),
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      side: BorderSide(
-                          color: Colors.grey,
-                          width: 2,
-                          style: BorderStyle.solid),
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 10, 0, 10),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                          padding: const EdgeInsets.only(left: 0, right: 30),
-                          child: Text(
-                            'Teacher',
-                            style: GoogleFonts.montserrat(
-                              textStyle: TextStyle(
-                                fontSize: 17,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
