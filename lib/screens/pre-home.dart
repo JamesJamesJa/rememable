@@ -36,7 +36,7 @@ class _PreHomeState extends State<PreHome> with SingleTickerProviderStateMixin {
                     selectedTabIndex: _selectedTabIndex,
                     changeIndex: _changeIndex,
                   )
-                : (_selectedTabIndex == 1)
+                : (_selectedTabIndex == 2)
                     ? CreateFlashcard(
                         selectedTabIndex: _selectedTabIndex,
                         changeIndex: _changeIndex,
