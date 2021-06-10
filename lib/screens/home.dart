@@ -21,6 +21,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height * 0.9,
+        color: Color(0xFFFAFAFA),
         child: Column(
           children: [
             Container(
@@ -41,7 +42,17 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
-            )
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.78,
+              child: Center(
+                child: Image.asset(
+                  'images/flashcard-icon.png',
+                  height: 30,
+                  width: 30,
+                ),
+              ),
+            ),
           ],
         ),
       ),

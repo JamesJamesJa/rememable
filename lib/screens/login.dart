@@ -129,24 +129,24 @@ class Login extends StatelessWidget {
                         contentPadding: EdgeInsets.only(bottom: 6.0)),
                   )),
             ),
-            Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width * 0.7,
-              height: 50,
-              margin: EdgeInsets.only(top: 60.0),
-              decoration: BoxDecoration(
-                color: Color(0xFF6C76C7),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 7,
-                    offset: Offset(2, 3),
-                  ),
-                ],
-              ),
-              child: GestureDetector(
+            GestureDetector(
+              child: Container(
+                alignment: Alignment.center,
+                width: MediaQuery.of(context).size.width * 0.7,
+                height: 50,
+                margin: EdgeInsets.only(top: 60.0),
+                decoration: BoxDecoration(
+                  color: Color(0xFF6C76C7),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 7,
+                      offset: Offset(2, 3),
+                    ),
+                  ],
+                ),
                 child: Container(
                     padding: EdgeInsets.only(left: 0, right: 10),
                     child: Text(
@@ -159,11 +159,11 @@ class Login extends StatelessWidget {
                         ),
                       ),
                     )),
-                onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => PreHome()));
-                },
               ),
+              onTap: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => PreHome()));
+              },
             ),
           ],
         ),

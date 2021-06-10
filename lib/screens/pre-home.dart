@@ -56,7 +56,7 @@ class _PreHomeState extends State<PreHome> with SingleTickerProviderStateMixin {
               ),
             ],
           ),
-          height: MediaQuery.of(context).size.height * 0.09,
+          height: MediaQuery.of(context).size.height * 0.1,
           child: BottomNavBar(
               selectedTabIndex: _selectedTabIndex, changeIndex: _changeIndex),
         ),

@@ -10,7 +10,6 @@ class BottomNavBar extends StatelessWidget {
     return new Theme(
       data: Theme.of(context).copyWith(canvasColor: Colors.white),
       child: SizedBox(
-        height: 54,
         child: new BottomNavigationBar(
           currentIndex: selectedTabIndex,
           type: BottomNavigationBarType.fixed,
