@@ -45,3 +45,8 @@ flutter:
     - images/bg-color.png
     - images/flashcard-icon.png
     - images/flashcard-cover-1.png
+    - images/category-math-cover.jpeg
+    - images/category-science-cover.jpeg
+    - images/category-science-cover2.jpeg
+    - images/category-language-cover.jpeg
+    - images/category-coding-cover.jpeg
