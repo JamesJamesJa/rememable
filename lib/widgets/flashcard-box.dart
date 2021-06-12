@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rememable/screens/flashcard-details.dart';
 // import 'package:kelena/models/user.dart';
 // import 'package:kelena/providers/student.dart';
 // import 'package:kelena/screens/firstCome.dart';
@@ -155,16 +156,17 @@ class _FlashcardBoxState extends State<FlashcardBox> {
         ),
       ),
       onTap: () {
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => InstructTime(
-        //               selectedTabIndex: widget.selectedTabIndex,
-        //               changeIndex: widget.changeIndex,
-        //               name: widget.name,
-        //               id: widget.id,
-        //               index: widget.index,
-        //             )));
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FlashcardDetails()
+                // InstructTime(
+                //       selectedTabIndex: widget.selectedTabIndex,
+                //       changeIndex: widget.changeIndex,
+                //       name: widget.name,
+                //       id: widget.id,
+                //       index: widget.index,
+                //     )
+                ));
       },
     );
   }
