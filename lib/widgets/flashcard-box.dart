@@ -64,9 +64,10 @@ class _FlashcardBoxState extends State<FlashcardBox> {
                 Container(
                   padding: EdgeInsets.only(left: 20.0, top: 0.0),
                   child: Image.asset(
-                    'images/flashcard-cover-1.png',
+                    'images/flashcard-cover-2.jpeg',
                     height: 50,
                     width: 50,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 Container(
