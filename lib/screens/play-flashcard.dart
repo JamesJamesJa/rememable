@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:kelena/models/user.dart';
@@ -29,10 +31,38 @@ class PlayFlashcard extends StatefulWidget {
   _PlayFlashcardState createState() => _PlayFlashcardState();
 }
 
-class _PlayFlashcardState extends State<PlayFlashcard> {
+class _PlayFlashcardState extends State<PlayFlashcard>
+    with SingleTickerProviderStateMixin {
+  int flashcardIndex = 0;
+  void setIndex(int value) {
+    setState(() {
+      flashcardIndex = value;
+    });
+    // print(flashcardIndex);
+  }
+
+  PageController pageController = PageController();
+  AnimationController _animationController;
+  Animation<double> _animation;
+  AnimationStatus _animationStatus = AnimationStatus.dismissed;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    _animation = Tween<double>(end: 1, begin: 0).animate(_animationController)
+      ..addListener(() {
+        setState(() {});
+      })
+      ..addStatusListener((status) {
+        _animationStatus = status;
+      });
+  }
+
   Widget build(BuildContext context) {
     int flashcardLength = 6;
-    // int flashcardLength = 20;
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -90,17 +120,19 @@ class _PlayFlashcardState extends State<PlayFlashcard> {
                       // addSemanticIndexes: false,
                       scrollDirection: Axis.horizontal,
                       itemCount: flashcardLength,
+                      // controller: indexController,
                       itemBuilder: (BuildContext context, int index) =>
                           Container(
                         width: 26,
                         height: 26,
                         margin: EdgeInsets.only(left: 10, right: 10),
                         decoration: BoxDecoration(
-                          color: index == 4
+                          color: index == flashcardIndex
                               ? Color(0xffFFAFCC)
-                              : index > 4
+                              : index > flashcardIndex
                                   ? Color(0xffDADADA)
-                                  : Color(0xffDAC5F8),
+                                  : Color(0xffCBADF6),
+                          // : Color(0xffDAC5F8),
                           borderRadius: BorderRadius.circular(100),
                         ),
                         child: Center(
@@ -122,57 +154,294 @@ class _PlayFlashcardState extends State<PlayFlashcard> {
             Container(
               height: MediaQuery.of(context).size.height * 0.84,
               // padding: EdgeInsets.only(top: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Stack(
                 children: [
-                  Container(
-                    // height: MediaQuery.of(context).size.height * 0.38,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.width * 0.8,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 7,
-                          offset: Offset(2, 3),
-                        ),
-                      ],
-                    ),
-                    margin: EdgeInsets.only(top: 10),
-                    padding: EdgeInsets.only(
-                        left: 30, top: 34, bottom: 34, right: 30),
-                    child: Center(
-                      child: Container(
-                        // color: Colors.red,
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        child: Text(
-                          'What is the value of\n36 + 96 ?',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.montserrat(
-                            textStyle: TextStyle(
-                                color: Color(0xFF6C76C7),
-                                fontSize: 22.0,
-                                fontWeight: FontWeight.w400,
-                                height: 1.8),
-                          ),
+                  PageView.builder(
+                      itemCount: flashcardLength,
+                      controller: pageController,
+                      onPageChanged: (value) {
+                        setIndex(value);
+                        _animationController.reset();
+                      },
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            Transform(
+                              transform: Matrix4.identity()
+                                ..setEntry(3, 2, 0.002)
+                                ..rotateY(pi * _animation.value),
+                              alignment: FractionalOffset.center,
+                              child: GestureDetector(
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  // width: 200,
+                                  // height: 200,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(16),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 1,
+                                        blurRadius: 7,
+                                        offset: Offset(2, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  margin: EdgeInsets.only(
+                                      top: MediaQuery.of(context).size.height *
+                                          0.12),
+                                  padding: EdgeInsets.only(
+                                      left: 30, top: 34, bottom: 34, right: 30),
+                                  child: Center(
+                                    child: _animation.value < 0.5
+                                        ? Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.6,
+                                            child: Text(
+                                              'What is the value of\n36 + 96 ?',
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.montserrat(
+                                                textStyle: TextStyle(
+                                                    color: Color(0xFF6C76C7),
+                                                    fontSize: 22.0,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.8),
+                                              ),
+                                            ),
+                                          )
+                                        : Transform(
+                                            transform: Matrix4.identity()
+                                              ..setEntry(
+                                                  3, 2, 0.001) // perspective
+                                              ..rotateY(pi * _animation.value),
+                                            alignment: FractionalOffset.center,
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.6,
+                                              child: Text(
+                                                '36 + 96 = 132',
+                                                textAlign: TextAlign.center,
+                                                textDirection:
+                                                    TextDirection.rtl,
+                                                style: GoogleFonts.montserrat(
+                                                  textStyle: TextStyle(
+                                                      color: Color(0xFF6C76C7),
+                                                      fontSize: 22.0,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      height: 1.8),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                                onTap: () {
+                                  if (_animationStatus ==
+                                      AnimationStatus.dismissed) {
+                                    _animationController.forward();
+                                  } else {
+                                    _animationController.reverse();
+                                  }
+                                  // print(_animation.value);
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
+                  Column(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        margin: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.56,
+                            left: MediaQuery.of(context).size.width * 0.15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(100),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 7,
+                                    offset: Offset(2, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                child: IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_back_ios_rounded,
+                                      size: 18,
+                                      color: Colors.black,
+                                    ),
+                                    onPressed: () {
+                                      if (flashcardIndex > 0) {
+                                        setState(() {
+                                          flashcardIndex--;
+                                        });
+                                        pageController.previousPage(
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            curve: Curves.ease);
+                                      }
+                                    }),
+                              ),
+                            ),
+                            Text(
+                              '${flashcardIndex + 1}/${flashcardLength}',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                    color: Color(0xFF6C76C7),
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.w700,
+                                    height: 1.8),
+                              ),
+                            ),
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(100),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 7,
+                                    offset: Offset(2, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                child: IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      size: 18,
+                                      color: Colors.black,
+                                    ),
+                                    onPressed: () {
+                                      if (flashcardIndex + 1 <
+                                          flashcardLength) {
+                                        setState(() {
+                                          flashcardIndex++;
+                                        });
+                                        pageController.nextPage(
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            curve: Curves.ease);
+                                      }
+                                    }),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    margin: EdgeInsets.only(top: 50),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     GestureDetector(
+                      //       child: Container(
+                      //         alignment: Alignment.center,
+                      //         width: MediaQuery.of(context).size.width * 0.38,
+                      //         height: 44,
+                      //         margin: EdgeInsets.only(
+                      //             left: MediaQuery.of(context).size.width * 0.1,
+                      //             top: 50),
+                      //         decoration: BoxDecoration(
+                      //           color: Color(0xFFB0C4F7),
+                      //           borderRadius: BorderRadius.circular(10),
+                      //           boxShadow: [
+                      //             BoxShadow(
+                      //               color: Colors.grey.withOpacity(0.5),
+                      //               spreadRadius: 2,
+                      //               blurRadius: 7,
+                      //               offset: Offset(2, 3),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //         child: Container(
+                      //             // padding: EdgeInsets.only(left: 0, right: 10),
+                      //             child: Text(
+                      //           'Play flashcard',
+                      //           style: GoogleFonts.montserrat(
+                      //             textStyle: TextStyle(
+                      //               fontSize: 14,
+                      //               color: Colors.white,
+                      //               fontWeight: FontWeight.w400,
+                      //             ),
+                      //           ),
+                      //         )),
+                      //       ),
+                      //       onTap: () {
+                      //         // Navigator.pushReplacement(context,
+                      //         //     MaterialPageRoute(builder: (context) => PreHome()));
+                      //       },
+                      //     ),
+                      //     GestureDetector(
+                      //       child: Container(
+                      //         alignment: Alignment.center,
+                      //         width: MediaQuery.of(context).size.width * 0.38,
+                      //         height: 44,
+                      //         margin: EdgeInsets.only(
+                      //             right: MediaQuery.of(context).size.width * 0.1,
+                      //             top: 50),
+                      //         decoration: BoxDecoration(
+                      //           color: Color(0xFFDAC5F8),
+                      //           borderRadius: BorderRadius.circular(10),
+                      //           boxShadow: [
+                      //             BoxShadow(
+                      //               color: Colors.grey.withOpacity(0.5),
+                      //               spreadRadius: 2,
+                      //               blurRadius: 7,
+                      //               offset: Offset(2, 3),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //         child: Container(
+                      //             // padding: EdgeInsets.only(left: 0, right: 10),
+                      //             child: Text(
+                      //           'Take the test',
+                      //           style: GoogleFonts.montserrat(
+                      //             textStyle: TextStyle(
+                      //               fontSize: 14,
+                      //               color: Colors.white,
+                      //               fontWeight: FontWeight.w400,
+                      //             ),
+                      //           ),
+                      //         )),
+                      //       ),
+                      //       onTap: () {
+                      //         // Navigator.pushReplacement(context,
+                      //         //     MaterialPageRoute(builder: (context) => PreHome()));
+                      //       },
+                      //     ),
+                      //   ],
+                      // ),
+                      GestureDetector(
+                        child: Container(
+                          // height: MediaQuery.of(context).size.height * 0.38,
+                          width: MediaQuery.of(context).size.width * 0.7,
                           height: 50,
-                          width: 50,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Color(0xffFFC8DD),
                             borderRadius: BorderRadius.circular(100),
                             boxShadow: [
                               BoxShadow(
@@ -183,169 +452,31 @@ class _PlayFlashcardState extends State<PlayFlashcard> {
                               ),
                             ],
                           ),
+                          margin: EdgeInsets.only(
+                              top: 50,
+                              left: MediaQuery.of(context).size.width * 0.15),
+                          // padding: EdgeInsets.only(top: 10, bottom: 10),
                           child: Center(
-                            child: IconButton(
-                                icon: Icon(
-                                  Icons.arrow_back_ios_rounded,
-                                  size: 18,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {
-                                  // Navigator.pop(context);
-                                }),
-                          ),
-                        ),
-                        Text(
-                          '4/5',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.montserrat(
-                            textStyle: TextStyle(
-                                color: Color(0xFF6C76C7),
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.w700,
-                                height: 1.8),
-                          ),
-                        ),
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(100),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 1,
-                                blurRadius: 7,
-                                offset: Offset(2, 3),
+                            child: Text(
+                              'Tab this to see the definition',
+                              style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                    color: Color(0xFF6C76C7),
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w400),
                               ),
-                            ],
-                          ),
-                          child: Center(
-                            child: IconButton(
-                                icon: Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 18,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {
-                                  // Navigator.pop(context);
-                                }),
+                            ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     GestureDetector(
-                  //       child: Container(
-                  //         alignment: Alignment.center,
-                  //         width: MediaQuery.of(context).size.width * 0.38,
-                  //         height: 44,
-                  //         margin: EdgeInsets.only(
-                  //             left: MediaQuery.of(context).size.width * 0.1,
-                  //             top: 50),
-                  //         decoration: BoxDecoration(
-                  //           color: Color(0xFFB0C4F7),
-                  //           borderRadius: BorderRadius.circular(10),
-                  //           boxShadow: [
-                  //             BoxShadow(
-                  //               color: Colors.grey.withOpacity(0.5),
-                  //               spreadRadius: 2,
-                  //               blurRadius: 7,
-                  //               offset: Offset(2, 3),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //         child: Container(
-                  //             // padding: EdgeInsets.only(left: 0, right: 10),
-                  //             child: Text(
-                  //           'Play flashcard',
-                  //           style: GoogleFonts.montserrat(
-                  //             textStyle: TextStyle(
-                  //               fontSize: 14,
-                  //               color: Colors.white,
-                  //               fontWeight: FontWeight.w400,
-                  //             ),
-                  //           ),
-                  //         )),
-                  //       ),
-                  //       onTap: () {
-                  //         // Navigator.pushReplacement(context,
-                  //         //     MaterialPageRoute(builder: (context) => PreHome()));
-                  //       },
-                  //     ),
-                  //     GestureDetector(
-                  //       child: Container(
-                  //         alignment: Alignment.center,
-                  //         width: MediaQuery.of(context).size.width * 0.38,
-                  //         height: 44,
-                  //         margin: EdgeInsets.only(
-                  //             right: MediaQuery.of(context).size.width * 0.1,
-                  //             top: 50),
-                  //         decoration: BoxDecoration(
-                  //           color: Color(0xFFDAC5F8),
-                  //           borderRadius: BorderRadius.circular(10),
-                  //           boxShadow: [
-                  //             BoxShadow(
-                  //               color: Colors.grey.withOpacity(0.5),
-                  //               spreadRadius: 2,
-                  //               blurRadius: 7,
-                  //               offset: Offset(2, 3),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //         child: Container(
-                  //             // padding: EdgeInsets.only(left: 0, right: 10),
-                  //             child: Text(
-                  //           'Take the test',
-                  //           style: GoogleFonts.montserrat(
-                  //             textStyle: TextStyle(
-                  //               fontSize: 14,
-                  //               color: Colors.white,
-                  //               fontWeight: FontWeight.w400,
-                  //             ),
-                  //           ),
-                  //         )),
-                  //       ),
-                  //       onTap: () {
-                  //         // Navigator.pushReplacement(context,
-                  //         //     MaterialPageRoute(builder: (context) => PreHome()));
-                  //       },
-                  //     ),
-                  //   ],
-                  // ),
-                  Container(
-                    // height: MediaQuery.of(context).size.height * 0.38,
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Color(0xffFFC8DD),
-                      borderRadius: BorderRadius.circular(100),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 7,
-                          offset: Offset(2, 3),
-                        ),
-                      ],
-                    ),
-                    margin: EdgeInsets.only(top: 50, bottom: 50),
-                    // padding: EdgeInsets.only(top: 10, bottom: 10),
-                    child: Center(
-                      child: Text(
-                        'Tab this to see the definition',
-                        style: GoogleFonts.montserrat(
-                          textStyle: TextStyle(
-                              color: Color(0xFF6C76C7),
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400),
-                        ),
+                        onTap: () {
+                          if (_animationStatus == AnimationStatus.dismissed) {
+                            _animationController.forward();
+                          } else {
+                            _animationController.reverse();
+                          }
+                        },
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
