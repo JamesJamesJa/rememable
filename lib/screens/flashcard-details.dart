@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rememable/screens/flashcard-test.dart';
 import 'package:rememable/screens/play-flashcard.dart';
 // import 'package:kelena/models/user.dart';
 // import 'package:kelena/providers/student.dart';
@@ -350,8 +351,10 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                             )),
                           ),
                           onTap: () {
-                            // Navigator.pushReplacement(context,
-                            //     MaterialPageRoute(builder: (context) => PreHome()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FlashcardTest()));
                           },
                         ),
                       ],

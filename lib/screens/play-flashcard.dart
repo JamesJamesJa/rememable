@@ -458,7 +458,9 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                           // padding: EdgeInsets.only(top: 10, bottom: 10),
                           child: Center(
                             child: Text(
-                              'Tab this to see the definition',
+                              _animationController.value < 0.5
+                                  ? 'Tab this to see the definition'
+                                  : 'Tab this to see the Term',
                               style: GoogleFonts.montserrat(
                                 textStyle: TextStyle(
                                     color: Color(0xFF6C76C7),
