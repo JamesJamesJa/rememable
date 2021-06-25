@@ -30,6 +30,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   syncfusion_flutter_gauges: ^19.1.69
+  focused_menu: ^1.0.5
 
 dev_dependencies:
   flutter_test:

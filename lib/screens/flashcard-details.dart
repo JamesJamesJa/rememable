@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:focused_menu/modals.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rememable/screens/flashcard-test.dart';
 import 'package:rememable/screens/play-flashcard.dart';
+import 'package:focused_menu/focused_menu.dart';
 // import 'package:kelena/models/user.dart';
 // import 'package:kelena/providers/student.dart';
 // import 'package:kelena/screens/firstCome.dart';
@@ -79,29 +81,46 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                     height: MediaQuery.of(context).size.height * 0.12,
                     width: MediaQuery.of(context).size.width * 0.15,
                     padding: EdgeInsets.only(top: 40.0, right: 10.0),
-                    child: IconButton(
-                        icon: Icon(
-                          Icons.more_horiz_rounded,
-                          size: 26,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          // Navigator.pop(context);
-                        }),
+                    child: FocusedMenuHolder(
+                      menuWidth: MediaQuery.of(context).size.width * 0.4,
+                      openWithTap: true,
+                      menuItems: <FocusedMenuItem>[
+                        FocusedMenuItem(
+                            title: Text("Edit"),
+                            trailingIcon: Icon(Icons.edit),
+                            onPressed: () {
+                              // Navigator.push(context, MaterialPageRoute(builder: (context)=>ScreenTwo()));
+                            }),
+                        FocusedMenuItem(
+                            title: Text(
+                              "Delete",
+                              // style: TextStyle(color: Colors.redAccent),
+                            ),
+                            trailingIcon: Icon(
+                              Icons.delete,
+                              // color: Colors.redAccent,
+                            ),
+                            onPressed: () {}),
+                      ],
+                      onPressed: () {},
+                      child: Icon(
+                        Icons.more_horiz_rounded,
+                        size: 26,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.88,
-              // padding: EdgeInsets.only(top: 10),
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: [
                     Container(
                       height: 80,
-                      // color: Colors.red,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
