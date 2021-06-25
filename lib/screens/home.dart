@@ -22,7 +22,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        height: MediaQuery.of(context).size.height * 0.9,
+        height: MediaQuery.of(context).size.height * 0.91,
         color: Color(0xFFFAFAFA),
         child: Column(
           children: [
@@ -46,7 +46,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ),
             ),
             Container(
-              height: MediaQuery.of(context).size.height * 0.78,
+              height: MediaQuery.of(context).size.height * 0.79,
               child: Container(
                   color: Color(0xFFFAFAFA),
                   height: MediaQuery.of(context).size.height * 0.3,

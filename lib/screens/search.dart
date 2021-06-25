@@ -33,7 +33,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.9,
+        height: MediaQuery.of(context).size.height * 0.91,
         color: Color(0xFFFAFAFA),
         child: Column(
           children: [
@@ -119,7 +119,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
               ),
             ),
             Container(
-              height: MediaQuery.of(context).size.height * 0.73,
+              height: MediaQuery.of(context).size.height * 0.74,
               width: MediaQuery.of(context).size.width * 0.9,
               child: TabBarView(
                 controller: _tabController,
