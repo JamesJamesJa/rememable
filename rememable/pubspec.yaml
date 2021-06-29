@@ -31,6 +31,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   syncfusion_flutter_gauges: ^19.1.69
   focused_menu: ^1.0.5
+  image_picker: ^0.8.1+1
+  dotted_border: ^2.0.0
 
 dev_dependencies:
   flutter_test:
