@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rememable/screens/category.dart';
 // import 'package:kelena/models/user.dart';
 // import 'package:kelena/providers/student.dart';
 // import 'package:kelena/screens/firstCome.dart';
@@ -69,166 +70,206 @@ class _FlashcardCategotyState extends State<FlashcardCategoty> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 7,
-                          offset: Offset(2, 3),
-                        ),
-                      ],
-                    ),
-                    margin: EdgeInsets.only(left: 40, top: 14, bottom: 10),
-                    child: Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.asset(
-                            'images/category-math-cover.jpeg',
-                            height: 220,
-                            width: 150,
-                            fit: BoxFit.cover,
+                  GestureDetector(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 7,
+                            offset: Offset(2, 3),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 190, left: 20),
-                          child: Text(
-                            'Math',
-                            style: GoogleFonts.montserrat(
-                              textStyle: TextStyle(
-                                  color: Color(0xFF000000),
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w400),
+                        ],
+                      ),
+                      margin: EdgeInsets.only(left: 40, top: 14, bottom: 10),
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.asset(
+                              'images/category-math-cover.jpeg',
+                              height: 220,
+                              width: 150,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            margin: EdgeInsets.only(top: 190, left: 20),
+                            child: Text(
+                              'Math',
+                              style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                    color: Color(0xFF000000),
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Category(
+                                    category: "Math",
+                                  )));
+                    },
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 7,
-                          offset: Offset(2, 3),
-                        ),
-                      ],
-                    ),
-                    margin: EdgeInsets.only(left: 30, top: 14, bottom: 10),
-                    child: Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.asset(
-                            'images/category-science-cover2.jpeg',
-                            height: 220,
-                            width: 150,
-                            fit: BoxFit.cover,
+                  GestureDetector(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 7,
+                            offset: Offset(2, 3),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 190, left: 20),
-                          child: Text(
-                            'Science',
-                            style: GoogleFonts.montserrat(
-                              textStyle: TextStyle(
-                                  color: Color(0xFF000000),
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w400),
+                        ],
+                      ),
+                      margin: EdgeInsets.only(left: 30, top: 14, bottom: 10),
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.asset(
+                              'images/category-science-cover2.jpeg',
+                              height: 220,
+                              width: 150,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            margin: EdgeInsets.only(top: 190, left: 20),
+                            child: Text(
+                              'Science',
+                              style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                    color: Color(0xFF000000),
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Category(
+                                    category: "Science",
+                                  )));
+                    },
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 7,
-                          offset: Offset(2, 3),
-                        ),
-                      ],
-                    ),
-                    margin: EdgeInsets.only(left: 30, top: 14, bottom: 10),
-                    child: Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.asset(
-                            'images/category-language-cover.jpeg',
-                            height: 220,
-                            width: 150,
-                            fit: BoxFit.cover,
+                  GestureDetector(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 7,
+                            offset: Offset(2, 3),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 190, left: 20),
-                          child: Text(
-                            'Language',
-                            style: GoogleFonts.montserrat(
-                              textStyle: TextStyle(
-                                  color: Color(0xFF000000),
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w400),
+                        ],
+                      ),
+                      margin: EdgeInsets.only(left: 30, top: 14, bottom: 10),
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.asset(
+                              'images/category-language-cover.jpeg',
+                              height: 220,
+                              width: 150,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            margin: EdgeInsets.only(top: 190, left: 20),
+                            child: Text(
+                              'Language',
+                              style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                    color: Color(0xFF000000),
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Category(
+                                    category: "Language",
+                                  )));
+                    },
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 7,
-                          offset: Offset(2, 3),
-                        ),
-                      ],
-                    ),
-                    margin: EdgeInsets.only(
-                        left: 30, top: 14, bottom: 10, right: 40),
-                    child: Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.asset(
-                            'images/category-coding-cover.jpeg',
-                            height: 220,
-                            width: 150,
-                            fit: BoxFit.cover,
+                  GestureDetector(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 7,
+                            offset: Offset(2, 3),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 190, left: 20),
-                          child: Text(
-                            'Coding',
-                            style: GoogleFonts.montserrat(
-                              textStyle: TextStyle(
-                                  color: Color(0xFF000000),
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w400),
+                        ],
+                      ),
+                      margin: EdgeInsets.only(
+                          left: 30, top: 14, bottom: 10, right: 40),
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.asset(
+                              'images/category-coding-cover.jpeg',
+                              height: 220,
+                              width: 150,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            margin: EdgeInsets.only(top: 190, left: 20),
+                            child: Text(
+                              'Coding',
+                              style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                    color: Color(0xFF000000),
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Category(
+                                    category: "Coding",
+                                  )));
+                    },
                   ),
                 ],
               ),

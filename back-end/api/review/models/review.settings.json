@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "reviews",
+  "info": {
+    "name": "review",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "comment": {
+      "type": "string"
+    },
+    "rating": {
+      "type": "integer"
+    },
+    "flashcard": {
+      "via": "review_list",
+      "model": "flashcard"
+    },
+    "owner_review": {
+      "via": "review_list",
+      "plugin": "users-permissions",
+      "model": "user"
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "flashcards",
+  "info": {
+    "name": "flashcard",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "flashcard_name": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "cover_image": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "rating": {
+      "type": "decimal"
+    },
+    "review_amount": {
+      "type": "integer"
+    },
+    "review_id": {
+      "type": "richtext"
+    },
+    "owner_flashcard": {
+      "via": "own_flashcards_list",
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "question_list": {
+      "collection": "question",
+      "via": "flashcards"
+    },
+    "fav_owner": {
+      "via": "fav_list",
+      "plugin": "users-permissions",
+      "collection": "user"
+    },
+    "review_list": {
+      "collection": "review",
+      "via": "flashcard"
+    },
+    "studied_flashcards": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "studied_owner"
+    }
+  }
+}

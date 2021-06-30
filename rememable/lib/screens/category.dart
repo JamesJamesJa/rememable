@@ -5,24 +5,27 @@ import 'package:rememable/widgets/bottom-nav-bar.dart';
 import 'package:rememable/widgets/flashcard-box.dart';
 import 'package:rememable/widgets/home-screen-widget/flashcard-category.dart';
 
-class Home extends StatefulWidget {
-  final int selectedTabIndex;
-  final Function changeIndex;
-  const Home({
+class Category extends StatefulWidget {
+  final String category;
+  // final int selectedTabIndex;
+  // final Function changeIndex;
+  const Category({
     Key key,
-    this.selectedTabIndex,
-    this.changeIndex,
+    this.category,
+    // this.selectedTabIndex,
+    // this.changeIndex,
   }) : super(key: key);
   @override
-  _HomeState createState() => _HomeState();
+  _CategoryState createState() => _CategoryState();
 }
 
-class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+class _CategoryState extends State<Category>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        height: MediaQuery.of(context).size.height * 0.91,
+        height: MediaQuery.of(context).size.height,
         color: Color(0xFFFAFAFA),
         child: Column(
           children: [
@@ -30,32 +33,51 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               height: MediaQuery.of(context).size.height * 0.12,
               width: MediaQuery.of(context).size.width,
               color: Color(0xFF749BFF),
-              child: Center(
-                child: Container(
-                  padding: EdgeInsets.only(top: 40),
-                  child: Text(
-                    'Home',
-                    style: GoogleFonts.montserrat(
-                      textStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w400),
+              child: Stack(
+                children: [
+                  Center(
+                    child: Container(
+                      padding: EdgeInsets.only(top: 40),
+                      child: Text(
+                        widget.category,
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.11,
+                    width: MediaQuery.of(context).size.width,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(top: 40.0, left: 10.0),
+                    child: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_rounded,
+                          size: 26,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                  ),
+                ],
               ),
             ),
             Container(
-              height: MediaQuery.of(context).size.height * 0.79,
+              height: MediaQuery.of(context).size.height * 0.88,
               child: Container(
                   color: Color(0xFFFAFAFA),
                   height: MediaQuery.of(context).size.height * 0.3,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
+                    padding: EdgeInsets.only(top: 20),
                     scrollDirection: Axis.vertical,
-                    itemBuilder: (ctx, index) =>
-                        (index == 0) ? FlashcardCategoty() : FlashcardBox(),
-                    itemCount: 1 + 7,
+                    itemBuilder: (ctx, index) => FlashcardBox(),
+                    itemCount: 8,
                   )),
               // SingleChildScrollView(
               //   scrollDirection: Axis.vertical,
