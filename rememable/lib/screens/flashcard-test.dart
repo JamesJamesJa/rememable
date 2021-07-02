@@ -37,7 +37,7 @@ class _FlashcardTestState extends State<FlashcardTest> {
   var flashcardNumberController = ScrollController();
   int flashcardIndex = 0;
   int scorePoint = 0;
-  double scorePercent = 67;
+  double scorePercent = 0;
   double scrollPosition = 0;
   void setIndex(int value) {
     setState(() {

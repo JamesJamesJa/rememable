@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:rememable/widgets/flashcard-box.dart';
+// import 'package:rememable/widgets/create-flashcard/create-flashcard-box.dart';
+// import 'package:rememable/widgets/flashcard-box.dart';
 import 'package:dotted_border/dotted_border.dart';
 
 class CreateFlashcard extends StatefulWidget {
@@ -21,14 +22,14 @@ class CreateFlashcard extends StatefulWidget {
 
 class _CreateFlashcardState extends State<CreateFlashcard>
     with SingleTickerProviderStateMixin {
-  List<TextEditingController> termTemp = [];
+  // List<TextEditingController> termTemp = [];
   List<TextEditingController> term = [];
   List<TextEditingController> definition = [];
-  List<TextEditingController> definitionTemp = [];
+  // List<TextEditingController> definitionTemp = [];
   var titleController = TextEditingController();
-  var titleControllerTemp = TextEditingController();
+  // var titleControllerTemp = TextEditingController();
   var descriptionController = TextEditingController();
-  var descriptionControllerTemp = TextEditingController();
+  // var descriptionControllerTemp = TextEditingController();
 
   String dropdownValue;
   int flashcardLength = 3;
@@ -58,6 +59,27 @@ class _CreateFlashcardState extends State<CreateFlashcard>
       });
     }
   }
+
+  // Function changeTerm(int index, String termTemp) {
+  //   setState(() {
+  //     term[index].text = termTemp;
+  //   });
+  // }
+
+  // Function changeDefinition(int index, String definitionTemp) {
+  //   setState(() {
+  //     definition[index].text = definitionTemp;
+  //   });
+  // }
+
+  // @override
+  // void dispose() {
+  //   titleController.dispose();
+  //   titleControllerTemp.dispose();
+  //   descriptionController.dispose();
+  //   descriptionControllerTemp.dispose();
+  //   super.dispose();
+  // }
 
   // @override
   // void initState() {
@@ -125,6 +147,13 @@ class _CreateFlashcardState extends State<CreateFlashcard>
                         ),
                       ),
                       onTap: () {
+                        // print(titleController.text +
+                        //     " " +
+                        //     descriptionController.text);
+                        // for (int i = 0; i < flashcardLength; i++) {
+                        //   print(term[i].text + " " + definition[i].text);
+                        // }
+
                         Navigator.pop(context);
                       },
                     ),
@@ -140,11 +169,13 @@ class _CreateFlashcardState extends State<CreateFlashcard>
                       scrollDirection: Axis.vertical,
                       itemCount: 1 + flashcardLength,
                       itemBuilder: (ctx, index) {
-                        term.add(TextEditingController());
-                        termTemp.add(TextEditingController());
+                        if (index != 0) {
+                          term.add(TextEditingController());
+                          // termTemp.add(TextEditingController());
 
-                        definition.add(TextEditingController());
-                        definitionTemp.add(TextEditingController());
+                          definition.add(TextEditingController());
+                          // definitionTemp.add(TextEditingController());
+                        }
 
                         return (index == 0)
                             ? Container(
@@ -304,7 +335,7 @@ class _CreateFlashcardState extends State<CreateFlashcard>
                                                 0.8,
                                         // margin: EdgeInsets.only(top: 20),
                                         child: TextField(
-                                          controller: titleControllerTemp,
+                                          controller: titleController,
                                           decoration: InputDecoration(
                                             hintText: "Subject, chapter, unit",
                                             hintStyle: GoogleFonts.montserrat(
@@ -318,11 +349,11 @@ class _CreateFlashcardState extends State<CreateFlashcard>
                                                 top: 30.0, left: 2, right: 2),
                                             border: InputBorder.none,
                                           ),
-                                          onChanged: (String value) {
-                                            setState(() {
-                                              titleController.text = value;
-                                            });
-                                          },
+                                          // onChanged: (String value) {
+                                          //   setState(() {
+                                          //     titleController.text = value;
+                                          //   });
+                                          // },
                                         ),
                                       ),
                                     ),
@@ -357,7 +388,7 @@ class _CreateFlashcardState extends State<CreateFlashcard>
                                             MediaQuery.of(context).size.width *
                                                 0.8,
                                         child: TextField(
-                                          controller: descriptionControllerTemp,
+                                          controller: descriptionController,
                                           decoration: InputDecoration(
                                             hintStyle: GoogleFonts.montserrat(
                                               textStyle: TextStyle(
@@ -370,12 +401,12 @@ class _CreateFlashcardState extends State<CreateFlashcard>
                                                 top: 30.0, left: 2, right: 2),
                                             border: InputBorder.none,
                                           ),
-                                          onChanged: (String value) {
-                                            setState(() {
-                                              descriptionController.text =
-                                                  value;
-                                            });
-                                          },
+                                          // onChanged: (String value) {
+                                          //   setState(() {
+                                          //     descriptionController.text =
+                                          //         value;
+                                          //   });
+                                          // },
                                         ),
                                       ),
                                     ),
@@ -405,12 +436,17 @@ class _CreateFlashcardState extends State<CreateFlashcard>
                                   setState(() {
                                     flashcardLength--;
                                     term.removeAt(index - 1);
-                                    termTemp.removeAt(index - 1);
+                                    // termTemp.removeAt(index - 1);
                                     definition.removeAt(index - 1);
-                                    definitionTemp.removeAt(index - 1);
+                                    // definitionTemp.removeAt(index - 1);
                                   });
                                 },
-                                child: Container(
+                                child:
+                                    // CreateFlashcardBox(
+                                    //     index: index - 1,
+                                    //     changeTerm: changeTerm,
+                                    //     changeDefinition: changeDefinition)
+                                    Container(
                                   child: Column(
                                     children: [
                                       Container(
@@ -456,8 +492,7 @@ class _CreateFlashcardState extends State<CreateFlashcard>
                                                         .width *
                                                     0.7,
                                                 child: TextField(
-                                                  controller:
-                                                      termTemp[index - 1],
+                                                  controller: term[index - 1],
                                                   decoration: InputDecoration(
                                                     hintStyle:
                                                         GoogleFonts.montserrat(
@@ -477,20 +512,20 @@ class _CreateFlashcardState extends State<CreateFlashcard>
                                                     border: InputBorder.none,
                                                   ),
                                                   onChanged: (String value) {
-                                                    setState(() {
-                                                      term[index - 1].text =
-                                                          value;
-                                                      // termTemp[index - 1]
-                                                      //         .selection =
-                                                      //     TextSelection.fromPosition(
-                                                      //         TextPosition(
-                                                      //             offset: termTemp[
-                                                      //                     index - 1]
-                                                      //                 .text
-                                                      //                 .length));
-                                                      // termTemp[index - 1].text =
-                                                      //     value;
-                                                    });
+                                                    //   setState(() {
+                                                    //     term[index - 1].text =
+                                                    //         value;
+                                                    //     // termTemp[index - 1]
+                                                    //     //         .selection =
+                                                    //     //     TextSelection.fromPosition(
+                                                    //     //         TextPosition(
+                                                    //     //             offset: termTemp[
+                                                    //     //                     index - 1]
+                                                    //     //                 .text
+                                                    //     //                 .length));
+                                                    //     // termTemp[index - 1].text =
+                                                    //     //     value;
+                                                    //   });
                                                   },
                                                 ),
                                               ),
@@ -532,7 +567,7 @@ class _CreateFlashcardState extends State<CreateFlashcard>
                                                     0.7,
                                                 child: TextField(
                                                   controller:
-                                                      definitionTemp[index - 1],
+                                                      definition[index - 1],
                                                   decoration: InputDecoration(
                                                     hintStyle:
                                                         GoogleFonts.montserrat(
@@ -551,11 +586,14 @@ class _CreateFlashcardState extends State<CreateFlashcard>
                                                             right: 2),
                                                     border: InputBorder.none,
                                                   ),
+                                                  // onSubmitted: (value) {
+                                                  //   print("asd");
+                                                  // },
                                                   onChanged: (String value) {
-                                                    setState(() {
-                                                      definition[index - 1]
-                                                          .text = value;
-                                                    });
+                                                    // setState(() {
+                                                    //   definition[index - 1]
+                                                    //       .text = value;
+                                                    // });
                                                   },
                                                 ),
                                               ),
