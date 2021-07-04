@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rememable/models/flashcard.dart';
+import 'package:rememable/models/question.dart';
 import 'package:rememable/models/review.dart';
 import 'package:rememable/models/user.dart';
 
 class Authen with ChangeNotifier {
+  User _profile;
   String _token;
   int _uid;
   var publicAPI = 'https://rememable.herokuapp.com/';
@@ -22,7 +24,20 @@ class Authen with ChangeNotifier {
     return _uid;
   }
 
-  Future<User> getUserProfile() async {
+  User get profile {
+    return _profile;
+  }
+
+  bool ownerCheck(String id) {
+    for (int i = 0; i < _profile.ownFlashcardList.length; i++) {
+      if (id == _profile.ownFlashcardList[i]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<void> getUserProfile() async {
     var endpoint = publicAPI + 'users/$_uid';
 
     try {
@@ -30,34 +45,23 @@ class Authen with ChangeNotifier {
       final data = jsonDecode(res.body);
 
       if (data == null) return User();
-      List<Review> reviewList;
+      List<String> reviewList;
       for (int i = 0; i < data['review_list'].length; i++) {
-        reviewList.add(new Review(
-          id: data['review_list'][i]['id'],
-          flashcardOwnerId: data['review_list'][i]['user_id'],
-          comment: data['review_list'][i]['comment'],
-          rating: data['review_list'][i]['rating'],
-        ));
+        reviewList.add(data['review_list'][i]['id']);
       }
-      List<Flashcard> favList;
+      List<String> favList;
       for (int i = 0; i < data['fav_list'].length; i++) {
-        favList.add(new Flashcard());
-        // new Review(
-        // id: data['review_list'][i]['id'],
-        // flashcardOwnerId: data['review_list'][i]['user_id'],
-        // comment: data['review_list'][i]['comment'],
-        // rating: data['review_list'][i]['rating'],
-        // )
+        favList.add(data['fav_list'][i]['id']);
       }
-      List<Flashcard> ownFlashcardList;
-      for (int i = 0; i < data['fav_list'].length; i++) {
-        ownFlashcardList.add(new Flashcard());
+      List<String> ownFlashcardList;
+      for (int i = 0; i < data['own_flashcards_list'].length; i++) {
+        ownFlashcardList.add(data['own_flashcards_list'][i]['id']);
       }
-      List<Flashcard> studiedOwner;
-      for (int i = 0; i < data['fav_list'].length; i++) {
-        studiedOwner.add(new Flashcard());
+      List<String> studiedOwner;
+      for (int i = 0; i < data['studied_owner'].length; i++) {
+        studiedOwner.add(data['studied_owner'][i]['id']);
       }
-      User profile = new User(
+      _profile = new User(
         id: data['id'],
         name: data['name'],
         reviewList: reviewList,
@@ -75,7 +79,7 @@ class Authen with ChangeNotifier {
         // 'country': data['country'],
         // 'zip_code': data['zip_code'],
       );
-      return profile;
+      // return profile;
     } catch (err) {
       return throw (err);
     }
@@ -131,7 +135,7 @@ class Authen with ChangeNotifier {
 
     try {
       final res = await http.post(Uri.parse(endpoint),
-          body: {"email": email, "password": password});
+          body: {"identifier": email, "password": password});
       final data = jsonDecode(res.body);
 
       if (res.statusCode == 400) return false;

@@ -5,10 +5,14 @@ class User {
   final String id;
   final String name;
   final String email;
-  final List<Review> reviewList;
-  final List<Flashcard> ownFlashcardList;
-  final List<Flashcard> favList;
-  final List<Flashcard> studiedOwner;
+  final List<String> reviewList;
+  final List<String> ownFlashcardList;
+  final List<String> favList;
+  final List<String> studiedOwner;
+  // final List<Review> reviewList;
+  // final List<Flashcard> ownFlashcardList;
+  // final List<Flashcard> favList;
+  // final List<Flashcard> studiedOwner;
 
   const User({
     this.id,

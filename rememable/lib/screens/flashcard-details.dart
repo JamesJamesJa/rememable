@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:rememable/models/user.dart';
+import 'package:rememable/providers/allFlashcard.dart';
+import 'package:rememable/providers/authen.dart';
 import 'package:rememable/screens/flashcard-test.dart';
 import 'package:rememable/screens/play-flashcard.dart';
 import 'package:focused_menu/focused_menu.dart';
@@ -12,6 +16,7 @@ import 'package:focused_menu/focused_menu.dart';
 // import 'package:provider/provider.dart';
 
 class FlashcardDetails extends StatefulWidget {
+  final String flashcard_id;
   // final User teacher;
   // final String id, name, classNow;
   // final bool fav;
@@ -20,6 +25,7 @@ class FlashcardDetails extends StatefulWidget {
   // final Function changeIndex;
   const FlashcardDetails({
     Key key,
+    this.flashcard_id,
     // this.teacher,
     // this.id,
     // this.name,
@@ -35,8 +41,10 @@ class FlashcardDetails extends StatefulWidget {
 
 class _FlashcardDetailsState extends State<FlashcardDetails> {
   Widget build(BuildContext context) {
+    User user = Provider.of<Authen>(context).profile;
     return Scaffold(
-      body: Container(
+        body: Consumer<AllFlashcard>(builder: (context, allFlashcard, child) {
+      return Container(
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFFAFAFA),
         child: Column(
@@ -67,7 +75,8 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                     padding: EdgeInsets.only(top: 40),
                     child: Center(
                       child: Text(
-                        'Number Addition',
+                        '${allFlashcard.getNameById(widget.flashcard_id)}',
+                        // 'Number Addition',
                         style: GoogleFonts.montserrat(
                           textStyle: TextStyle(
                               color: Colors.white,
@@ -130,7 +139,10 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                             child: Text(
                               "Owner",
                               style: TextStyle(
-                                  color: Color(0xFFB8B8B8),
+                                  color: 1 == 1
+                                      // user.ownerCheck()
+                                      ? Color(0xFFB8B8B8)
+                                      : Color(0xFFFAFAFA),
                                   fontWeight: FontWeight.w200,
                                   fontSize: 14.0),
                             ),
@@ -154,8 +166,8 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        'images/flashcard-cover-2.jpeg',
+                      child: Image.network(
+                        'https://rememable.herokuapp.com${allFlashcard.getImagePathById(widget.flashcard_id)}',
                         height: 160,
                         width: 160,
                         fit: BoxFit.cover,
@@ -179,32 +191,80 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                     fontSize: 18.0),
                               ),
                             ),
-                            Icon(
-                              // widget.fav ? Icons.favorite :
-                              Icons.star_outlined,
-                              size: 28,
-                              color: Color(0xFFFFDA55),
-                            ),
-                            Icon(
-                              Icons.star_outlined,
-                              size: 28,
-                              color: Color(0xFFFFDA55),
-                            ),
-                            Icon(
-                              Icons.star_outlined,
-                              size: 28,
-                              color: Color(0xFFFFDA55),
-                            ),
-                            Icon(
-                              Icons.star_half_outlined,
-                              size: 28,
-                              color: Color(0xFFFFDA55),
-                            ),
-                            Icon(
-                              Icons.star_border_outlined,
-                              size: 28,
-                              color: Color(0xFFFFDA55),
-                            ),
+                            for (int index = 1; index <= 5; index++)
+                              (allFlashcard.getRatingById(
+                                              widget.flashcard_id)) /
+                                          2 >=
+                                      index.toDouble()
+                                  ? Icon(
+                                      // widget.fav ? Icons.favorite :
+                                      Icons.star_outlined,
+                                      size: 28,
+                                      color: Color(0xFFFFDA55),
+                                    )
+                                  : (allFlashcard.getRatingById(
+                                                  widget.flashcard_id)) /
+                                              2 >=
+                                          index.toDouble() - 0.5
+                                      ? Icon(
+                                          // widget.fav ? Icons.favorite :
+                                          Icons.star_half_outlined,
+                                          size: 28,
+                                          color: Color(0xFFFFDA55),
+                                        )
+                                      : Icon(
+                                          // widget.fav ? Icons.favorite :
+                                          Icons.star_border_outlined,
+                                          size: 28,
+                                          color: Color(0xFFFFDA55),
+                                        ),
+
+                            // ListView.builder(
+                            //     scrollDirection: Axis.vertical,
+                            //     itemCount: 5,
+                            //     itemBuilder: (ctx, index) =>
+                            //         (9.toDouble() / 2) >= index.toDouble()
+                            //             ? Icon(
+                            //                 // widget.fav ? Icons.favorite :
+                            //                 Icons.star_outlined,
+                            //                 size: 28,
+                            //                 color: Color(0xFFFFDA55),
+                            //               )
+                            //             : (9.toDouble() / 2) >=
+                            //                     index.toDouble() - 0.5
+                            //                 ? Icon(
+                            //                     // widget.fav ? Icons.favorite :
+                            //                     Icons.star_half_outlined,
+                            //                     size: 28,
+                            //                     color: Color(0xFFFFDA55),
+                            //                   )
+                            //                 : Icon(
+                            //                     // widget.fav ? Icons.favorite :
+                            //                     Icons.star_border_outlined,
+                            //                     size: 28,
+                            //                     color: Color(0xFFFFDA55),
+                            //                   ),
+                            //                   ),
+                            // Icon(
+                            //   Icons.star_outlined,
+                            //   size: 28,
+                            //   color: Color(0xFFFFDA55),
+                            // ),
+                            // Icon(
+                            //   Icons.star_outlined,
+                            //   size: 28,
+                            //   color: Color(0xFFFFDA55),
+                            // ),
+                            // Icon(
+                            //   Icons.star_half_outlined,
+                            //   size: 28,
+                            //   color: Color(0xFFFFDA55),
+                            // ),
+                            // Icon(
+                            //   Icons.star_border_outlined,
+                            //   size: 28,
+                            //   color: Color(0xFFFFDA55),
+                            // ),
                           ],
                         ),
                       ),
@@ -233,7 +293,8 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                         children: [
                           Container(
                             child: Text(
-                              'Name : Number Addition',
+                              'Name : ${allFlashcard.getNameById(widget.flashcard_id)}',
+                              // 'Name : Number Addition',
                               style: GoogleFonts.montserrat(
                                 textStyle: TextStyle(
                                     color: Color(0xFF6C76C7),
@@ -245,7 +306,33 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                           Container(
                             margin: EdgeInsets.only(top: 20),
                             child: Text(
-                              'By : Dr.Peil Foden',
+                              'By : ${allFlashcard.getOwnerNameById(widget.flashcard_id)}',
+                              // 'By : Dr.Peil Foden',
+                              style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                    color: Color(0xFF6C76C7),
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ),
+                          // Container(
+                          //   margin: EdgeInsets.only(top: 20),
+                          //   child: Text(
+                          //     'Topic : Numeric',
+                          //     style: GoogleFonts.montserrat(
+                          //       textStyle: TextStyle(
+                          //           color: Color(0xFF6C76C7),
+                          //           fontSize: 18.0,
+                          //           fontWeight: FontWeight.w400),
+                          //     ),
+                          //   ),
+                          // ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20),
+                            child: Text(
+                              'Catagory : ${allFlashcard.getCategoryById(widget.flashcard_id)}',
+                              // 'Category : Math',
                               style: GoogleFonts.montserrat(
                                 textStyle: TextStyle(
                                     color: Color(0xFF6C76C7),
@@ -257,31 +344,8 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                           Container(
                             margin: EdgeInsets.only(top: 20),
                             child: Text(
-                              'Topic : Numeric',
-                              style: GoogleFonts.montserrat(
-                                textStyle: TextStyle(
-                                    color: Color(0xFF6C76C7),
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 20),
-                            child: Text(
-                              'Category : Math',
-                              style: GoogleFonts.montserrat(
-                                textStyle: TextStyle(
-                                    color: Color(0xFF6C76C7),
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 20),
-                            child: Text(
-                              'Description : This flashcard will teach you about basic of number addition',
+                              'Description : ${allFlashcard.getDescriptionById(widget.flashcard_id)}',
+                              // 'Description : This flashcard will teach you about basic of number addition',
                               style: GoogleFonts.montserrat(
                                 textStyle: TextStyle(
                                     color: Color(0xFF6C76C7),
@@ -405,7 +469,7 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                             children: [
                               Container(
                                 child: Text(
-                                  'Rating  7.8 / 10',
+                                  'Rating  ${allFlashcard.getRatingById(widget.flashcard_id)} / 10',
                                   style: GoogleFonts.montserrat(
                                     textStyle: TextStyle(
                                         color: Color(0xFF6C76C7),
@@ -448,7 +512,7 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
             ),
           ],
         ),
-      ),
-    );
+      );
+    }));
   }
 }

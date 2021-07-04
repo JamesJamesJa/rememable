@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rememable/models/flashcard.dart';
+import 'package:rememable/providers/allFlashcard.dart';
 import 'package:rememable/widgets/bottom-nav-bar.dart';
 import 'package:rememable/widgets/flashcard-box.dart';
 import 'package:rememable/widgets/home-screen-widget/flashcard-category.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   final int selectedTabIndex;
@@ -18,8 +21,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+  // @override
+  // void initState() {
+  //   Provider.of<AllFlashcard>(context, listen: false)
+  //       .flashcardDetails()
+  //       .then((_) {});
+  //   super.initState();
+  // }
+
   @override
   Widget build(BuildContext context) {
+    List<Flashcard> allFlashcard = Provider.of<AllFlashcard>(context).flashcard;
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height * 0.91,
@@ -53,9 +65,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
-                    itemBuilder: (ctx, index) =>
-                        (index == 0) ? FlashcardCategoty() : FlashcardBox(),
-                    itemCount: 1 + 7,
+                    itemBuilder: (ctx, index) => (index == 0)
+                        ? FlashcardCategoty()
+                        : FlashcardBox(
+                            flashcard_id: allFlashcard[index - 1].id,
+                            index: index - 1),
+                    itemCount: 1 + allFlashcard.length,
                   )),
               // SingleChildScrollView(
               //   scrollDirection: Axis.vertical,

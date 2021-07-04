@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:rememable/providers/allFlashcard.dart';
+import 'package:rememable/providers/authen.dart';
 import 'package:rememable/screens/login.dart';
 
 void main() => runApp(
-      App(),
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => AllFlashcard()),
+          ChangeNotifierProvider(create: (context) => Authen()),
+          // ChangeNotifierProvider(create: (context) => Teacher()),
+        ],
+        child: App(),
+      ),
     );
 
 class App extends StatelessWidget {
