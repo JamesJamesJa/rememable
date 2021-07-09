@@ -101,11 +101,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                   'Text to announce in accessibility modes',
                             )),
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          padding: EdgeInsets.only(left: 10),
-                          alignment: Alignment.center,
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          padding: EdgeInsets.only(left: 15),
                           // color: Colors.green,
-                          // margin: EdgeInsets.all(10),
                           child: Text('Email'),
                         ),
                         Container(
@@ -117,7 +115,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         ),
                         Container(
                           // color: Colors.yellow,
-                          width: MediaQuery.of(context).size.width * 0.1,
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.only(left: 5),
+                          width: MediaQuery.of(context).size.width * 0.15,
                           // margin: EdgeInsets.all(10),
                           child: Icon(
                             Icons.navigate_next,
@@ -130,100 +130,93 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       ],
                     ),
                   ),
-                  // 2
-                  Row(
-                    children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                    margin: EdgeInsets.all(10),
-                                    child: Icon(
-                                      Icons.person,
-                                      color: Colors.grey,
-                                      size: 24.0,
-                                      semanticLabel:
-                                          'Text to announce in accessibility modes',
-                                    )),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.all(10),
-                                  child: Text('Name'),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.all(10),
-                                  child: Text('Text from database: email'),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.all(10),
-                                  child: Icon(
-                                    Icons.navigate_next,
-                                    color: Colors.grey,
-                                    size: 24.0,
-                                    semanticLabel:
-                                        'Text to announce in accessibility modes',
-                                  ),
-                                )
-                              ],
-                            )
-                          ]),
-                    ],
+
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SecondRoute()),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                            alignment: Alignment.centerRight,
+                            width: MediaQuery.of(context).size.width * 0.15,
+                            // margin: EdgeInsets.all(10),
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.grey,
+                              size: 24.0,
+                              semanticLabel:
+                                  'Text to announce in accessibility modes',
+                            )),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          padding: EdgeInsets.only(left: 15),
+                          // margin: EdgeInsets.all(10),
+                          child: Text('Name'),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          alignment: Alignment.centerRight,
+                          // margin: EdgeInsets.all(10),
+                          child: Text('Text from database: email'),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          width: MediaQuery.of(context).size.width * 0.15,
+                          padding: EdgeInsets.only(left: 5),
+                          child: Icon(
+                            Icons.navigate_next,
+                            color: Colors.grey,
+                            size: 24.0,
+                            semanticLabel:
+                                'Text to announce in accessibility modes',
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  // 3
-                  Row(
-                    children: [
-                      Row(children: [
-                        Row(
-                          children: [
-                            Container(
-                                margin: EdgeInsets.all(10),
-                                child: Icon(
-                                  Icons.logout,
-                                  color: Colors.grey,
-                                  size: 24.0,
-                                  semanticLabel:
-                                      'Text to announce in accessibility modes',
-                                )),
-                          ],
+
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SecondRoute()),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                            alignment: Alignment.centerRight,
+                            width: MediaQuery.of(context).size.width * 0.15,
+                            child: Icon(
+                              Icons.logout,
+                              color: Colors.grey,
+                              size: 24.0,
+                              semanticLabel:
+                                  'Text to announce in accessibility modes',
+                            )),
+                        Container(
+                          padding: EdgeInsets.only(left: 15),
+                          alignment: Alignment.centerLeft,
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: Text('Logout'),
                         ),
-                        Row(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.all(10),
-                              child: Text('Logout'),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.all(10),
-                              child: Icon(
-                                Icons.navigate_next,
-                                color: Colors.grey,
-                                size: 24.0,
-                                semanticLabel:
-                                    'Text to announce in accessibility modes',
-                              ),
-                            )
-                          ],
+                        Container(
+                          padding: EdgeInsets.only(left: 5),
+                          alignment: Alignment.centerLeft,
+                          width: MediaQuery.of(context).size.width * 0.15,
+                          child: Icon(
+                            Icons.navigate_next,
+                            color: Colors.grey,
+                            size: 24.0,
+                            semanticLabel:
+                                'Text to announce in accessibility modes',
+                          ),
                         )
-                      ]),
-                    ],
+                      ],
+                    ),
                   )
+
+                  // 3
                 ],
               ),
             )
