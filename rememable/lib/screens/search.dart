@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:rememable/providers/allFlashcard.dart';
+import 'package:rememable/providers/authen.dart';
 import 'package:rememable/widgets/bottom-nav-bar.dart';
 import 'package:rememable/widgets/flashcard-box.dart';
 
@@ -18,6 +21,8 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
   TabController _tabController;
+  TextEditingController searchTextTemp = TextEditingController(text: "");
+  TextEditingController searchText = TextEditingController(text: "");
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 3);
@@ -30,8 +35,9 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
       Tab(text: "Favorite"),
       Tab(text: "New"),
     ];
-    return Scaffold(
-      body: Container(
+    return Scaffold(body: Consumer2<AllFlashcard, Authen>(
+        builder: (context, allFlashcard, user, child) {
+      return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.91,
         color: Color(0xFFFAFAFA),
@@ -67,6 +73,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                         child: Container(
                             padding: EdgeInsets.fromLTRB(10, 5, 20, 10),
                             child: TextField(
+                              controller: searchTextTemp,
                               decoration: InputDecoration(
                                   icon: Container(
                                     padding: EdgeInsets.only(left: 8.0, top: 6),
@@ -86,6 +93,11 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                                   ),
                                   contentPadding:
                                       EdgeInsets.only(bottom: 11.0)),
+                              onChanged: (value) {
+                                setState(() {
+                                  searchText.text = value;
+                                });
+                              },
                             )),
                       ),
                     ),
@@ -129,7 +141,15 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                       // height: MediaQuery.of(context).size.height * 0.63,
                       child: ListView.builder(
                     scrollDirection: Axis.vertical,
-                    itemBuilder: (ctx, index) => FlashcardBox(),
+                    itemBuilder: (ctx, index) => allFlashcard.inSearch(
+                            allFlashcard
+                                .getId(allFlashcard.getIndexByRating(index)),
+                            searchText.text)
+                        ? FlashcardBox(
+                            flashcard_id: allFlashcard
+                                .getId(allFlashcard.getIndexByRating(index)),
+                            index: allFlashcard.getIndexByRating(index))
+                        : Container(),
                     // InstructorBox(
                     //   id: teachersTest[index].id,
                     //   name: teachersTest[index].name,
@@ -139,27 +159,41 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                     //   selectedTabIndex: widget.selectedTabIndex,
                     //   changeIndex: widget.changeIndex,
                     // ),
-                    itemCount: 10,
+                    itemCount: allFlashcard.getLength(),
                     // student != null ? teachersTest.length : 0,
                   )),
                   Container(
                       child: ListView.builder(
                     scrollDirection: Axis.vertical,
-                    itemBuilder: (ctx, index) => FlashcardBox(),
-                    itemCount: 10,
+                    itemBuilder: (ctx, index) => allFlashcard.inSearch(
+                            user.getFavIdByIndex(index), searchText.text)
+                        ? FlashcardBox(
+                            flashcard_id: user.getFavIdByIndex(index),
+                            index: index,
+                          )
+                        : Container(),
+                    itemCount: user.favLength(),
                   )),
                   Container(
                       child: ListView.builder(
                     scrollDirection: Axis.vertical,
-                    itemBuilder: (ctx, index) => FlashcardBox(),
-                    itemCount: 10,
+                    itemBuilder: (ctx, index) => allFlashcard.inSearch(
+                            allFlashcard
+                                .getId(allFlashcard.getLength() - index - 1),
+                            searchText.text)
+                        ? FlashcardBox(
+                            flashcard_id: allFlashcard
+                                .getId(allFlashcard.getLength() - index - 1),
+                            index: allFlashcard.getLength() - index - 1)
+                        : Container(),
+                    itemCount: allFlashcard.getLength(),
                   )),
                 ],
               ),
             ),
           ],
         ),
-      ),
-    );
+      );
+    }));
   }
 }

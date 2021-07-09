@@ -10,12 +10,12 @@ class Flashcard {
   final String coverImage;
   final double rating;
   final int reviewAmount;
-  final String ownerFlashcardId;
+  // final String ownerFlashcardId;
   final String ownerFlashcardName;
   final List<Question> questionList;
-  final List<String> favOwner;
+  // final List<String> favOwner;
   final List<Review> reviewListId;
-  final List<String> studiedFlashcardId;
+  // final List<String> studiedFlashcardId;
   const Flashcard({
     this.id,
     this.name,
@@ -24,12 +24,12 @@ class Flashcard {
     this.coverImage,
     this.rating,
     this.reviewAmount,
-    this.ownerFlashcardId,
+    // this.ownerFlashcardId,
     this.ownerFlashcardName,
     this.questionList,
-    this.favOwner,
+    // this.favOwner,
     this.reviewListId,
-    this.studiedFlashcardId,
+    // this.studiedFlashcardId,
   });
 }
 

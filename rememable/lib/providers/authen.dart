@@ -9,7 +9,7 @@ import 'package:rememable/models/user.dart';
 class Authen with ChangeNotifier {
   User _profile;
   String _token;
-  int _uid;
+  String _uid;
   var publicAPI = 'https://rememable.herokuapp.com/';
 
   bool get isAuth {
@@ -20,7 +20,7 @@ class Authen with ChangeNotifier {
     return _token;
   }
 
-  int get uid {
+  String get uid {
     return _uid;
   }
 
@@ -28,39 +28,91 @@ class Authen with ChangeNotifier {
     return _profile;
   }
 
-  bool ownerCheck(String id) {
-    for (int i = 0; i < _profile.ownFlashcardList.length; i++) {
-      if (id == _profile.ownFlashcardList[i]) {
+  bool isFav(String id) {
+    for (int i = 0; i < _profile.favList.length; i++) {
+      if (id == _profile.favList[i]) {
         return true;
       }
     }
     return false;
   }
 
+  Future<void> manageFav(String id) async {
+    int indexTemp = _profile.favList.indexOf(id);
+
+    if (indexTemp == -1) {
+      _profile.favList.add(id);
+    } else {
+      _profile.favList.remove(id);
+    }
+    String jsonTemp = "{\"fav_list\": {\"data\": [";
+    int i = 0;
+    for (i = 0; i < _profile.favList.length; i++) {
+      jsonTemp += "\"${_profile.favList[i]}\",";
+    }
+    if (_profile.favList.length != 0) {
+      jsonTemp = jsonTemp.substring(0, jsonTemp.length - 1);
+    }
+
+    jsonTemp = jsonTemp + "]}}";
+
+    // print(jsonTemp);
+    try {
+      var response = await http.put(Uri.parse(publicAPI + 'users/$_uid'),
+          headers: {'Content-type': 'application/json'}, body: jsonTemp);
+      // body: jsonEncode(_profile.favList));
+    } catch (err) {
+      return throw (err);
+    }
+
+    notifyListeners();
+  }
+
+  bool ownerCheck(String id) {
+    if (_profile.ownFlashcardList.indexOf(id) == -1) {
+      return false;
+    }
+    return true;
+    // for (int i = 0; i < _profile.ownFlashcardList.length; i++) {
+    //   if (id == _profile.ownFlashcardList[i]) {
+    //     return true;
+    //   }
+    // }
+    // return false;
+  }
+
+  int favLength() {
+    return _profile.favList.length;
+  }
+
+  String getFavIdByIndex(int index) {
+    return _profile.favList[index];
+  }
+
   Future<void> getUserProfile() async {
     var endpoint = publicAPI + 'users/$_uid';
-
     try {
       final res = await http.get(Uri.parse(endpoint));
       final data = jsonDecode(res.body);
 
       if (data == null) return User();
-      List<String> reviewList;
-      for (int i = 0; i < data['review_list'].length; i++) {
-        reviewList.add(data['review_list'][i]['id']);
+      List<String> reviewList = [];
+      for (int i = 0; i < data['review_list']['data'].length; i++) {
+        reviewList.add(data['review_list']['data'][i].toString());
       }
-      List<String> favList;
-      for (int i = 0; i < data['fav_list'].length; i++) {
-        favList.add(data['fav_list'][i]['id']);
+      List<String> favList = [];
+      for (int i = 0; i < data['fav_list']['data'].length; i++) {
+        favList.add(data['fav_list']['data'][i].toString());
       }
-      List<String> ownFlashcardList;
-      for (int i = 0; i < data['own_flashcards_list'].length; i++) {
-        ownFlashcardList.add(data['own_flashcards_list'][i]['id']);
+      List<String> ownFlashcardList = [];
+      for (int i = 0; i < data['own_flashcard_list']['data'].length; i++) {
+        ownFlashcardList.add(data['own_flashcard_list']['data'][i].toString());
       }
-      List<String> studiedOwner;
-      for (int i = 0; i < data['studied_owner'].length; i++) {
-        studiedOwner.add(data['studied_owner'][i]['id']);
+      List<String> studiedOwner = [];
+      for (int i = 0; i < data['studied_flashcard_list']['data'].length; i++) {
+        studiedOwner.add(data['studied_flashcard_list']['data'][i].toString());
       }
+      // print(studiedOwner);
       _profile = new User(
         id: data['id'],
         name: data['name'],
@@ -79,6 +131,7 @@ class Authen with ChangeNotifier {
         // 'country': data['country'],
         // 'zip_code': data['zip_code'],
       );
+      notifyListeners();
       // return profile;
     } catch (err) {
       return throw (err);
@@ -141,7 +194,7 @@ class Authen with ChangeNotifier {
       if (res.statusCode == 400) return false;
 
       _token = data['jwt'];
-      _uid = data['user.id'];
+      _uid = data['user']['id'];
 
       // final prefs = await SharedPreferences.getInstance();
       // final user = json.encode({'token': _token, 'uid': _uid});
@@ -154,6 +207,31 @@ class Authen with ChangeNotifier {
       return throw (err);
     }
   }
+
+  // Future<void> updateAddFavList(String flashcard_id) async {
+  //   var endpoint = publicAPI + 'user/$flashcard_id';
+
+  //   try {
+  //     final res = await http
+  //         .post(Uri.parse(endpoint), body: {"id": flashcard_id, "": password});
+  //     final data = jsonDecode(res.body);
+
+  //     if (res.statusCode == 400) return false;
+
+  //     _token = data['jwt'];
+  //     _uid = data['user']['id'];
+
+  //     // final prefs = await SharedPreferences.getInstance();
+  //     // final user = json.encode({'token': _token, 'uid': _uid});
+  //     // prefs.setString('user', user);
+
+  //     notifyListeners();
+
+  //     return true;
+  //   } catch (err) {
+  //     return throw (err);
+  //   }
+  // }
 
   // Future<bool> autoLogin() async {
   //   final prefs = await SharedPreferences.getInstance();

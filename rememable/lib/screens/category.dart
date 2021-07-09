@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:rememable/models/flashcard.dart';
+import 'package:rememable/providers/allFlashcard.dart';
 import 'package:rememable/widgets/bottom-nav-bar.dart';
 import 'package:rememable/widgets/flashcard-box.dart';
 import 'package:rememable/widgets/home-screen-widget/flashcard-category.dart';
@@ -23,8 +26,10 @@ class _CategoryState extends State<Category>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    List<Flashcard> allFlashcard = Provider.of<AllFlashcard>(context).flashcard;
     return Scaffold(
-      body: Container(
+        body: Consumer<AllFlashcard>(builder: (context, allFlashcard, child) {
+      return Container(
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFFAFAFA),
         child: Column(
@@ -76,8 +81,15 @@ class _CategoryState extends State<Category>
                   child: ListView.builder(
                     padding: EdgeInsets.only(top: 20),
                     scrollDirection: Axis.vertical,
-                    itemBuilder: (ctx, index) => FlashcardBox(),
-                    itemCount: 8,
+                    itemBuilder: (ctx, index) =>
+                        allFlashcard.getCategoryByIndex(index) ==
+                                widget.category
+                            ? FlashcardBox(
+                                flashcard_id: allFlashcard.getId(index),
+                                index: index,
+                              )
+                            : Container(),
+                    itemCount: allFlashcard.getLength(),
                   )),
               // SingleChildScrollView(
               //   scrollDirection: Axis.vertical,
@@ -113,7 +125,7 @@ class _CategoryState extends State<Category>
             ),
           ],
         ),
-      ),
-    );
+      );
+    }));
   }
 }

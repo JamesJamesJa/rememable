@@ -41,9 +41,9 @@ class FlashcardDetails extends StatefulWidget {
 
 class _FlashcardDetailsState extends State<FlashcardDetails> {
   Widget build(BuildContext context) {
-    User user = Provider.of<Authen>(context).profile;
-    return Scaffold(
-        body: Consumer<AllFlashcard>(builder: (context, allFlashcard, child) {
+    // User user = Provider.of<Authen>(context).profile;
+    return Scaffold(body: Consumer2<AllFlashcard, Authen>(
+        builder: (context, allFlashcard, user, child) {
       return Container(
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFFAFAFA),
@@ -90,34 +90,40 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                     height: MediaQuery.of(context).size.height * 0.12,
                     width: MediaQuery.of(context).size.width * 0.15,
                     padding: EdgeInsets.only(top: 40.0, right: 10.0),
-                    child: FocusedMenuHolder(
-                      menuWidth: MediaQuery.of(context).size.width * 0.4,
-                      openWithTap: true,
-                      menuItems: <FocusedMenuItem>[
-                        FocusedMenuItem(
-                            title: Text("Edit"),
-                            trailingIcon: Icon(Icons.edit),
-                            onPressed: () {
-                              // Navigator.push(context, MaterialPageRoute(builder: (context)=>ScreenTwo()));
-                            }),
-                        FocusedMenuItem(
-                            title: Text(
-                              "Delete",
-                              // style: TextStyle(color: Colors.redAccent),
+                    child: user.ownerCheck(widget.flashcard_id)
+                        ? FocusedMenuHolder(
+                            menuWidth: MediaQuery.of(context).size.width * 0.4,
+                            openWithTap: true,
+                            menuItems: <FocusedMenuItem>[
+                              FocusedMenuItem(
+                                  title: Text("Edit"),
+                                  trailingIcon: Icon(Icons.edit),
+                                  onPressed: () {
+                                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>ScreenTwo()));
+                                  }),
+                              FocusedMenuItem(
+                                  title: Text(
+                                    "Delete",
+                                    // style: TextStyle(color: Colors.redAccent),
+                                  ),
+                                  trailingIcon: Icon(
+                                    Icons.delete,
+                                    // color: Colors.redAccent,
+                                  ),
+                                  onPressed: () {}),
+                            ],
+                            onPressed: () {},
+                            child: Icon(
+                              Icons.more_horiz_rounded,
+                              size: 26,
+                              color: Colors.white,
                             ),
-                            trailingIcon: Icon(
-                              Icons.delete,
-                              // color: Colors.redAccent,
-                            ),
-                            onPressed: () {}),
-                      ],
-                      onPressed: () {},
-                      child: Icon(
-                        Icons.more_horiz_rounded,
-                        size: 26,
-                        color: Colors.white,
-                      ),
-                    ),
+                          )
+                        : Icon(
+                            Icons.more_horiz_rounded,
+                            size: 26,
+                            color: Color(0xFF749BFF),
+                          ),
                   ),
                 ],
               ),
@@ -139,8 +145,8 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                             child: Text(
                               "Owner",
                               style: TextStyle(
-                                  color: 1 == 1
-                                      // user.ownerCheck()
+                                  // color: 1 == 1
+                                  color: user.ownerCheck(widget.flashcard_id)
                                       ? Color(0xFFB8B8B8)
                                       : Color(0xFFFAFAFA),
                                   fontWeight: FontWeight.w200,
@@ -151,12 +157,14 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                             padding: EdgeInsets.only(right: 40),
                             child: IconButton(
                               icon: Icon(
-                                // widget.fav ? Icons.favorite :
-                                Icons.favorite_outline,
+                                user.isFav(widget.flashcard_id)
+                                    ? Icons.favorite
+                                    : Icons.favorite_outline,
                                 size: 28,
                                 color: Color(0xFFFFAFCC),
                               ),
                               onPressed: () {
+                                user.manageFav(widget.flashcard_id);
                                 // student.manageFav(widget.id);
                               },
                             ),

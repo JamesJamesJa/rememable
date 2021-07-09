@@ -19,7 +19,7 @@ class PreHome extends StatefulWidget {
 
 class _PreHomeState extends State<PreHome> with SingleTickerProviderStateMixin {
   int _selectedTabIndex = 0;
-  int delayTime = 0;
+  // int delayTime = 0;
 
   @override
   _changeIndex(int index) {
@@ -30,16 +30,22 @@ class _PreHomeState extends State<PreHome> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    delayTime = 0;
-    Provider.of<AllFlashcard>(context, listen: false)
-        .flashcardDetails()
-        .then((_) {});
-    Provider.of<Authen>(context, listen: false).getUserProfile().then((_) {});
-    Future.delayed(const Duration(milliseconds: 3000), () {
-      setState(() {
-        delayTime = 1;
+    // delayTime = 0;
+    Provider.of<Authen>(context, listen: false)
+        .login('testtest@mail.com', 'testtest')
+        .then((_) {
+      Provider.of<Authen>(context, listen: false).getUserProfile().then((_) {
+        Provider.of<AllFlashcard>(context, listen: false)
+            .flashcardDetails()
+            .then((_) {});
       });
     });
+
+    // Future.delayed(const Duration(milliseconds: 6000), () {
+    //   setState(() {
+    //     delayTime = 1;
+    //   });
+    // });
     super.initState();
   }
 
@@ -47,7 +53,7 @@ class _PreHomeState extends State<PreHome> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     List<Flashcard> allFlashcard = Provider.of<AllFlashcard>(context).flashcard;
 
-    return delayTime == 0
+    return allFlashcard.isEmpty
         ? Scaffold(
             body: Center(
             child: LoadingBouncingGrid.square(
