@@ -120,6 +120,7 @@ class Authen with ChangeNotifier {
       _profile = new User(
         id: data['id'],
         name: data['name'],
+        email: data['email'],
         reviewList: reviewList,
         favList: favList,
         ownFlashcardList: ownFlashcardList,
