@@ -64,6 +64,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   height: MediaQuery.of(context).size.height * 0.3,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
+                    padding: EdgeInsets.only(bottom: 30, top: 40),
                     scrollDirection: Axis.vertical,
                     itemBuilder: (ctx, index) => (index == 0)
                         ? FlashcardCategoty()

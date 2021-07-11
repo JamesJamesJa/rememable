@@ -405,7 +405,9 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => PlayFlashcard()));
+                                    builder: (context) => PlayFlashcard(
+                                          flashcard_id: widget.flashcard_id,
+                                        )));
                           },
                         ),
                         GestureDetector(

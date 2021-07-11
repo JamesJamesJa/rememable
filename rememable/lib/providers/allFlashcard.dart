@@ -1,4 +1,11 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart';
+import 'package:async/async.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rememable/models/flashcard.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -90,6 +97,14 @@ class AllFlashcard with ChangeNotifier {
     }
   }
 
+  int getQuestionLength(String id) {
+    for (int i = 0; i < _flashcard.length; i++) {
+      if (_flashcard[i].id == id) {
+        return _flashcard[i].questionList.length;
+      }
+    }
+  }
+
   void setRatingIndex() {
     List<double> allRating = [];
     ratingIndex = [];
@@ -108,6 +123,7 @@ class AllFlashcard with ChangeNotifier {
       allRating[tempIndex] = -1;
       ratingIndex.add(tempIndex);
     }
+    notifyListeners();
   }
 
   int getIndexByRating(int index) {
@@ -119,6 +135,90 @@ class AllFlashcard with ChangeNotifier {
       if (_flashcard[i].id == id) {
         return i;
       }
+    }
+  }
+
+  Future<void> addNewFlashcard(
+      String flashcard_name,
+      String category,
+      String description,
+      File cover_image,
+      String owner_flashcard_name,
+      List<String> term,
+      List<String> definition) async {
+    try {
+      List<Question> allQuestion = [];
+      String cover_image_url = "";
+      String jsonQuestionId = "[";
+      for (int i = 0; i < term.length; i++) {
+        String jsonQuestion =
+            "{\"question\": \"${term[i]}\", \"answer\": \"${definition[i]}\"}";
+        var response = await http.post(
+            Uri.parse('https://rememable.herokuapp.com/questions'),
+            headers: {'Content-type': 'application/json'},
+            body: jsonQuestion);
+        final data = jsonDecode(response.body);
+        jsonQuestionId += "\"${data['id']}\",";
+        allQuestion.add(new Question(
+            id: data['id'],
+            question: data['question'],
+            answer: data['answer']));
+      }
+      if (jsonQuestionId[jsonQuestionId.length - 1] != "[") {
+        jsonQuestionId = jsonQuestionId.substring(0, jsonQuestionId.length - 1);
+      }
+      jsonQuestionId += "]";
+
+      List<int> imageBytes = cover_image.readAsBytesSync();
+      String imageType = cover_image.path.split('.').last;
+      var stream =
+          new http.ByteStream(DelegatingStream.typed(cover_image.openRead()));
+
+      var uri = Uri.parse('https://rememable.herokuapp.com/upload');
+      int length = imageBytes.length;
+      var request = new http.MultipartRequest("POST", uri);
+      var multipartFile = new http.MultipartFile('files', stream, length,
+          filename: basename(cover_image.path),
+          contentType: MediaType('image', '${imageType}'));
+
+      request.files.add(multipartFile);
+      String jsonTemp = "{";
+      var responseImage = await request.send().then((value) {
+        value.stream.transform(utf8.decoder).listen((event) async {
+          cover_image_url = event.split('url')[1].split('\"')[2];
+          jsonTemp += "\"flashcard_name\": \"${flashcard_name}\", ";
+          jsonTemp += "\"category\": \"${category}\", ";
+          jsonTemp += "\"description\": \"${description}\", ";
+          jsonTemp += "\"cover_image\": ${event.toString()},";
+          jsonTemp += "\"rating\": 0.0, ";
+          jsonTemp += "\"review_amount\": 0, ";
+          jsonTemp += "\"owner_flashcard_name\": \"${owner_flashcard_name}\", ";
+          jsonTemp += "\"question_list\": {\"data\": ${jsonQuestionId}}, ";
+          jsonTemp += "\"review_list\": {\"data\": []}}";
+          var response = await http
+              .post(Uri.parse('https://rememable.herokuapp.com/flashcards'),
+                  headers: {'Content-type': 'application/json'}, body: jsonTemp)
+              .then((value) async {
+            final data = jsonDecode(value.body);
+            _flashcard.add(new Flashcard(
+              id: data['id'],
+              name: data['flashcard_name'],
+              category: data['category'],
+              description: data['description'],
+              coverImage: data['cover_image'][0]['url'],
+              rating: data['rating'].toDouble(),
+              reviewAmount: data['review_amount'],
+              ownerFlashcardName: data['owner_flashcard_name'],
+              questionList: allQuestion,
+              reviewListId: [],
+            ));
+            setRatingIndex();
+          });
+        });
+      });
+      notifyListeners();
+    } catch (err) {
+      return throw (err);
     }
   }
 

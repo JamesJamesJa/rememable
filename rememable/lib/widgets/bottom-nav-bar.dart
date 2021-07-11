@@ -99,8 +99,12 @@ class BottomNavBar extends StatelessWidget {
               color: Colors.white,
             ),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CreateFlashcard()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CreateFlashcard(
+                            flashcard_id: "",
+                          )));
             },
           )
         ],

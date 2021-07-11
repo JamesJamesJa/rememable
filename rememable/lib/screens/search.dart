@@ -140,6 +140,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                       // width: MediaQuery.of(context).size.width * 0.8,
                       // height: MediaQuery.of(context).size.height * 0.63,
                       child: ListView.builder(
+                    padding: EdgeInsets.only(bottom: 30, top: 10),
                     scrollDirection: Axis.vertical,
                     itemBuilder: (ctx, index) => allFlashcard.inSearch(
                             allFlashcard
@@ -164,6 +165,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                   )),
                   Container(
                       child: ListView.builder(
+                    padding: EdgeInsets.only(bottom: 30, top: 10),
                     scrollDirection: Axis.vertical,
                     itemBuilder: (ctx, index) => allFlashcard.inSearch(
                             user.getFavIdByIndex(index), searchText.text)
@@ -176,6 +178,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                   )),
                   Container(
                       child: ListView.builder(
+                    padding: EdgeInsets.only(bottom: 30, top: 10),
                     scrollDirection: Axis.vertical,
                     itemBuilder: (ctx, index) => allFlashcard.inSearch(
                             allFlashcard

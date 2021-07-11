@@ -89,6 +89,10 @@ class Authen with ChangeNotifier {
     return _profile.favList[index];
   }
 
+  String getName() {
+    return _profile.name;
+  }
+
   Future<void> getUserProfile() async {
     var endpoint = publicAPI + 'users/$_uid';
     try {

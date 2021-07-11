@@ -79,7 +79,7 @@ class _CategoryState extends State<Category>
                   height: MediaQuery.of(context).size.height * 0.3,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
-                    padding: EdgeInsets.only(top: 20),
+                    padding: EdgeInsets.only(top: 20, bottom: 40),
                     scrollDirection: Axis.vertical,
                     itemBuilder: (ctx, index) =>
                         allFlashcard.getCategoryByIndex(index) ==

@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:rememable/providers/allFlashcard.dart';
 // import 'package:kelena/models/user.dart';
 // import 'package:kelena/providers/student.dart';
 // import 'package:kelena/screens/firstCome.dart';
@@ -10,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 // import 'package:provider/provider.dart';
 
 class PlayFlashcard extends StatefulWidget {
+  final String flashcard_id;
   // final User teacher;
   // final String id, name, classNow;
   // final bool fav;
@@ -18,6 +21,7 @@ class PlayFlashcard extends StatefulWidget {
   // final Function changeIndex;
   const PlayFlashcard({
     Key key,
+    this.flashcard_id,
     // this.teacher,
     // this.id,
     // this.name,
@@ -61,10 +65,11 @@ class _PlayFlashcardState extends State<PlayFlashcard>
   }
 
   Widget build(BuildContext context) {
-    int flashcardLength = 6;
+    // int allFlahcard.getQuestionLength(widget.flashcard_id) = 6;
 
     return Scaffold(
-      body: Container(
+        body: Consumer<AllFlashcard>(builder: (context, allFlahcard, child) {
+      return Container(
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFFAFAFA),
         child: Column(
@@ -111,15 +116,22 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                   ),
                   Container(
                     // width: MediaQuery.of(context).size.width,
-                    width: flashcardLength < 10
-                        ? (flashcardLength * 20 + flashcardLength * 26) + 0.0
+                    width: allFlahcard.getQuestionLength(widget.flashcard_id) <
+                            10
+                        ? (allFlahcard.getQuestionLength(widget.flashcard_id) *
+                                    20 +
+                                allFlahcard.getQuestionLength(
+                                        widget.flashcard_id) *
+                                    26) +
+                            0.0
                         : MediaQuery.of(context).size.width,
                     height: 26,
                     child: ListView.builder(
                       // shrinkWrap: true,
                       // addSemanticIndexes: false,
                       scrollDirection: Axis.horizontal,
-                      itemCount: flashcardLength,
+                      itemCount:
+                          allFlahcard.getQuestionLength(widget.flashcard_id),
                       // controller: indexController,
                       itemBuilder: (BuildContext context, int index) =>
                           Container(
@@ -157,7 +169,8 @@ class _PlayFlashcardState extends State<PlayFlashcard>
               child: Stack(
                 children: [
                   PageView.builder(
-                      itemCount: flashcardLength,
+                      itemCount:
+                          allFlahcard.getQuestionLength(widget.flashcard_id),
                       controller: pageController,
                       onPageChanged: (value) {
                         setIndex(value);
@@ -305,7 +318,7 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                               ),
                             ),
                             Text(
-                              '${flashcardIndex + 1}/${flashcardLength}',
+                              '${flashcardIndex + 1}/${allFlahcard.getQuestionLength(widget.flashcard_id)}',
                               textAlign: TextAlign.center,
                               style: GoogleFonts.montserrat(
                                 textStyle: TextStyle(
@@ -339,7 +352,8 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                                     ),
                                     onPressed: () {
                                       if (flashcardIndex + 1 <
-                                          flashcardLength) {
+                                          allFlahcard.getQuestionLength(
+                                              widget.flashcard_id)) {
                                         setState(() {
                                           flashcardIndex++;
                                         });
@@ -485,7 +499,7 @@ class _PlayFlashcardState extends State<PlayFlashcard>
             ),
           ],
         ),
-      ),
-    );
+      );
+    }));
   }
 }
