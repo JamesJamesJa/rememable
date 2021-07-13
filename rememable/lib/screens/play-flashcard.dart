@@ -37,6 +37,8 @@ class PlayFlashcard extends StatefulWidget {
 
 class _PlayFlashcardState extends State<PlayFlashcard>
     with SingleTickerProviderStateMixin {
+  // List<String> term = [];
+  // List<String> definition = [];
   int flashcardIndex = 0;
   void setIndex(int value) {
     setState(() {
@@ -217,7 +219,9 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                                                     .width *
                                                 0.6,
                                             child: Text(
-                                              'What is the value of\n36 + 96 ?',
+                                              // 'What is the value of\n36 + 96 ?',
+                                              allFlahcard.getQuestionByIndex(
+                                                  widget.flashcard_id, index),
                                               textAlign: TextAlign.center,
                                               style: GoogleFonts.montserrat(
                                                 textStyle: TextStyle(
@@ -240,7 +244,9 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                                                       .width *
                                                   0.6,
                                               child: Text(
-                                                '36 + 96 = 132',
+                                                // '36 + 96 = 132',
+                                                allFlahcard.getAnswerByIndex(
+                                                    widget.flashcard_id, index),
                                                 textAlign: TextAlign.center,
                                                 textDirection:
                                                     TextDirection.rtl,

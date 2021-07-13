@@ -138,6 +138,22 @@ class AllFlashcard with ChangeNotifier {
     }
   }
 
+  String getQuestionByIndex(String id, int index) {
+    for (int i = 0; i < _flashcard.length; i++) {
+      if (_flashcard[i].id == id) {
+        return _flashcard[i].questionList[index].question;
+      }
+    }
+  }
+
+  String getAnswerByIndex(String id, int index) {
+    for (int i = 0; i < _flashcard.length; i++) {
+      if (_flashcard[i].id == id) {
+        return _flashcard[i].questionList[index].answer;
+      }
+    }
+  }
+
   Future<void> addNewFlashcard(
       String flashcard_name,
       String category,
