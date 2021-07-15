@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:rememable/providers/allFlashcard.dart';
+import 'package:rememable/providers/authen.dart';
 import 'package:rememable/widgets/animation/show-up.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 // import 'package:kelena/models/user.dart';
@@ -10,6 +13,7 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 // import 'package:provider/provider.dart';
 
 class FlashcardTest extends StatefulWidget {
+  final String flashcard_id;
   // final User teacher;
   // final String id, name, classNow;
   // final bool fav;
@@ -18,6 +22,7 @@ class FlashcardTest extends StatefulWidget {
   // final Function changeIndex;
   const FlashcardTest({
     Key key,
+    this.flashcard_id,
     // this.teacher,
     // this.id,
     // this.name,
@@ -49,11 +54,12 @@ class _FlashcardTestState extends State<FlashcardTest> {
   PageController pageController = PageController();
 
   Widget build(BuildContext context) {
-    int flashcardLength = 3;
+    // int flashcardLength = 3;
     // int flashcardLength = 10;
 
-    return Scaffold(
-      body: Container(
+    return Scaffold(body: Consumer2<AllFlashcard, Authen>(
+        builder: (context, allFlashcard, user, child) {
+      return Container(
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFFAFAFA),
         child: Column(
@@ -83,7 +89,9 @@ class _FlashcardTestState extends State<FlashcardTest> {
                             }),
                       ),
                       Center(
-                        child: flashcardIndex == flashcardLength
+                        child: flashcardIndex ==
+                                allFlashcard
+                                    .getQuestionLength(widget.flashcard_id)
                             ? Container(
                                 margin: EdgeInsets.only(top: 70),
                                 child: Text(
@@ -98,9 +106,15 @@ class _FlashcardTestState extends State<FlashcardTest> {
                               )
                             : Container(
                                 // width: MediaQuery.of(context).size.width,
-                                width: flashcardLength < 8
-                                    ? (flashcardLength * 20 +
-                                            flashcardLength * 26) +
+                                width: allFlashcard.getQuestionLength(
+                                            widget.flashcard_id) <
+                                        8
+                                    ? (allFlashcard.getQuestionLength(
+                                                    widget.flashcard_id) *
+                                                20 +
+                                            allFlashcard.getQuestionLength(
+                                                    widget.flashcard_id) *
+                                                26) +
                                         0.0
                                     // MediaQuery.of(context).size.width
                                     : MediaQuery.of(context).size.width * 0.74,
@@ -114,7 +128,8 @@ class _FlashcardTestState extends State<FlashcardTest> {
                                   // addSemanticIndexes: true,
                                   controller: flashcardNumberController,
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: flashcardLength,
+                                  itemCount: allFlashcard
+                                      .getQuestionLength(widget.flashcard_id),
 
                                   // controller: indexController,
                                   itemBuilder:
@@ -171,7 +186,8 @@ class _FlashcardTestState extends State<FlashcardTest> {
               height: MediaQuery.of(context).size.height * 0.84,
               width: MediaQuery.of(context).size.width,
               // padding: EdgeInsets.only(top: 10),
-              child: flashcardIndex == flashcardLength
+              child: flashcardIndex ==
+                      allFlashcard.getQuestionLength(widget.flashcard_id)
                   ? Column(children: [
                       Container(
                           width: MediaQuery.of(context).size.width,
@@ -293,7 +309,7 @@ class _FlashcardTestState extends State<FlashcardTest> {
                         child: Container(
                           margin: EdgeInsets.only(top: 20),
                           child: Text(
-                              'You missed ${flashcardLength - scorePoint} out of ${flashcardLength} questions',
+                              'You missed ${allFlashcard.getQuestionLength(widget.flashcard_id) - scorePoint} out of ${allFlashcard.getQuestionLength(widget.flashcard_id)} questions',
                               style: GoogleFonts.montserrat(
                                   textStyle: TextStyle(
                                 color: Color(0xFF6C76C7),
@@ -350,7 +366,8 @@ class _FlashcardTestState extends State<FlashcardTest> {
                         Container(
                           height: MediaQuery.of(context).size.height * 0.54,
                           child: PageView.builder(
-                              itemCount: flashcardLength,
+                              itemCount: allFlashcard
+                                  .getQuestionLength(widget.flashcard_id),
                               controller: pageController,
                               onPageChanged: (value) {
                                 setIndex(value);
@@ -393,7 +410,10 @@ class _FlashcardTestState extends State<FlashcardTest> {
                                             MediaQuery.of(context).size.width *
                                                 0.6,
                                         child: Text(
-                                          'What is the value of\n36 + 96 ?',
+                                          // 'What is the value of\n36 + 96 ?',
+                                          allFlashcard.getQuestionByIndex(
+                                              widget.flashcard_id,
+                                              flashcardIndex),
                                           textAlign: TextAlign.center,
                                           style: GoogleFonts.montserrat(
                                             textStyle: TextStyle(
@@ -468,7 +488,9 @@ class _FlashcardTestState extends State<FlashcardTest> {
                                               answerController.text = "";
                                               if (flashcardIndex > 3 &&
                                                   flashcardIndex + 3 <
-                                                      flashcardLength) {
+                                                      allFlashcard
+                                                          .getQuestionLength(widget
+                                                              .flashcard_id)) {
                                                 flashcardNumberController
                                                     .jumpTo(scrollPosition);
                                                 scrollPosition += 46;
@@ -535,17 +557,30 @@ class _FlashcardTestState extends State<FlashcardTest> {
                                 ),
                                 onTap: () {
                                   setState(() {
-                                    flashcardIndex++;
-                                    if (answerControllerTemp.text == "s") {
-                                      scorePoint++;
+                                    if (flashcardIndex !=
+                                        allFlashcard.getQuestionLength(
+                                            widget.flashcard_id)) {
+                                      if (answerControllerTemp.text ==
+                                          allFlashcard.getAnswerByIndex(
+                                              widget.flashcard_id,
+                                              flashcardIndex)) {
+                                        scorePoint++;
+                                      }
                                     }
                                     scorePercent = scorePoint.toDouble() /
-                                        flashcardLength.toDouble() *
+                                        allFlashcard
+                                            .getQuestionLength(
+                                                widget.flashcard_id)
+                                            .toDouble() *
                                         100;
                                     answerController.text = "";
                                     answerControllerTemp.text = "";
+                                    flashcardIndex++;
+                                    print(flashcardIndex);
                                     if (flashcardIndex > 3 &&
-                                        flashcardIndex + 3 < flashcardLength) {
+                                        flashcardIndex + 3 <
+                                            allFlashcard.getQuestionLength(
+                                                widget.flashcard_id)) {
                                       flashcardNumberController
                                           .jumpTo(scrollPosition);
                                       scrollPosition += 46;
@@ -563,7 +598,7 @@ class _FlashcardTestState extends State<FlashcardTest> {
             ),
           ],
         ),
-      ),
-    );
+      );
+    }));
   }
 }

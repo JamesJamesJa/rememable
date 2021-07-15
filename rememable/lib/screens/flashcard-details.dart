@@ -447,7 +447,9 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => FlashcardTest()));
+                                    builder: (context) => FlashcardTest(
+                                          flashcard_id: widget.flashcard_id,
+                                        )));
                           },
                         ),
                       ],

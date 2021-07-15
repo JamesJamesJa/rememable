@@ -37,6 +37,65 @@ class Authen with ChangeNotifier {
     return false;
   }
 
+  bool isStudied(String id) {
+    for (int i = 0; i < _profile.studiedOwner.length; i++) {
+      if (id == _profile.studiedOwner[i]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<void> addStudied(String id) async {
+    _profile.studiedOwner.add(id);
+    String jsonTemp = "{\"studied_flashcard_list\": {\"data\": [";
+    int i = 0;
+    for (i = 0; i < _profile.studiedOwner.length; i++) {
+      jsonTemp += "\"${_profile.studiedOwner[i]}\",";
+    }
+    if (_profile.studiedOwner.length != 0) {
+      jsonTemp = jsonTemp.substring(0, jsonTemp.length - 1);
+    }
+
+    jsonTemp = jsonTemp + "]}}";
+
+    try {
+      var response = await http.put(Uri.parse(publicAPI + 'users/$_uid'),
+          headers: {'Content-type': 'application/json'}, body: jsonTemp);
+      // final data = jsonDecode(response.body);
+      // print(data.toString());
+    } catch (err) {
+      return throw (err);
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> addOwnerFlashcardId(String id) async {
+    _profile.ownFlashcardList.add(id);
+    String jsonTemp = "{\"own_flashcard_list\": {\"data\": [";
+    int i = 0;
+    for (i = 0; i < _profile.ownFlashcardList.length; i++) {
+      jsonTemp += "\"${_profile.ownFlashcardList[i]}\",";
+    }
+    if (_profile.ownFlashcardList.length != 0) {
+      jsonTemp = jsonTemp.substring(0, jsonTemp.length - 1);
+    }
+
+    jsonTemp = jsonTemp + "]}}";
+
+    try {
+      var response = await http.put(Uri.parse(publicAPI + 'users/$_uid'),
+          headers: {'Content-type': 'application/json'}, body: jsonTemp);
+      final data = jsonDecode(response.body);
+      print(data.toString());
+    } catch (err) {
+      return throw (err);
+    }
+
+    notifyListeners();
+  }
+
   Future<void> manageFav(String id) async {
     int indexTemp = _profile.favList.indexOf(id);
 

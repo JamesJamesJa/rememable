@@ -154,7 +154,7 @@ class AllFlashcard with ChangeNotifier {
     }
   }
 
-  Future<void> addNewFlashcard(
+  Future<String> addNewFlashcard(
       String flashcard_name,
       String category,
       String description,
@@ -163,6 +163,7 @@ class AllFlashcard with ChangeNotifier {
       List<String> term,
       List<String> definition) async {
     try {
+      // String idTemp = "";
       List<Question> allQuestion = [];
       String cover_image_url = "";
       String jsonQuestionId = "[";
@@ -216,6 +217,7 @@ class AllFlashcard with ChangeNotifier {
                   headers: {'Content-type': 'application/json'}, body: jsonTemp)
               .then((value) async {
             final data = jsonDecode(value.body);
+            // idTemp = data['id'];
             _flashcard.add(new Flashcard(
               id: data['id'],
               name: data['flashcard_name'],
@@ -229,10 +231,13 @@ class AllFlashcard with ChangeNotifier {
               reviewListId: [],
             ));
             setRatingIndex();
+            notifyListeners();
+            print("DATA:ID:${data['id']}");
+            return "data['id']";
+            // return _flashcard[_flashcard.length - 1].id;
           });
         });
       });
-      notifyListeners();
     } catch (err) {
       return throw (err);
     }

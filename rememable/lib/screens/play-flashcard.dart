@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:rememable/providers/allFlashcard.dart';
+import 'package:rememable/providers/authen.dart';
 // import 'package:kelena/models/user.dart';
 // import 'package:kelena/providers/student.dart';
 // import 'package:kelena/screens/firstCome.dart';
@@ -67,10 +68,10 @@ class _PlayFlashcardState extends State<PlayFlashcard>
   }
 
   Widget build(BuildContext context) {
-    // int allFlahcard.getQuestionLength(widget.flashcard_id) = 6;
+    // int allFlashcard.getQuestionLength(widget.flashcard_id) = 6;
 
-    return Scaffold(
-        body: Consumer<AllFlashcard>(builder: (context, allFlahcard, child) {
+    return Scaffold(body: Consumer2<AllFlashcard, Authen>(
+        builder: (context, allFlashcard, user, child) {
       return Container(
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFFAFAFA),
@@ -118,11 +119,11 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                   ),
                   Container(
                     // width: MediaQuery.of(context).size.width,
-                    width: allFlahcard.getQuestionLength(widget.flashcard_id) <
+                    width: allFlashcard.getQuestionLength(widget.flashcard_id) <
                             10
-                        ? (allFlahcard.getQuestionLength(widget.flashcard_id) *
+                        ? (allFlashcard.getQuestionLength(widget.flashcard_id) *
                                     20 +
-                                allFlahcard.getQuestionLength(
+                                allFlashcard.getQuestionLength(
                                         widget.flashcard_id) *
                                     26) +
                             0.0
@@ -133,7 +134,7 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                       // addSemanticIndexes: false,
                       scrollDirection: Axis.horizontal,
                       itemCount:
-                          allFlahcard.getQuestionLength(widget.flashcard_id),
+                          allFlashcard.getQuestionLength(widget.flashcard_id),
                       // controller: indexController,
                       itemBuilder: (BuildContext context, int index) =>
                           Container(
@@ -172,7 +173,7 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                 children: [
                   PageView.builder(
                       itemCount:
-                          allFlahcard.getQuestionLength(widget.flashcard_id),
+                          allFlashcard.getQuestionLength(widget.flashcard_id),
                       controller: pageController,
                       onPageChanged: (value) {
                         setIndex(value);
@@ -220,7 +221,7 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                                                 0.6,
                                             child: Text(
                                               // 'What is the value of\n36 + 96 ?',
-                                              allFlahcard.getQuestionByIndex(
+                                              allFlashcard.getQuestionByIndex(
                                                   widget.flashcard_id, index),
                                               textAlign: TextAlign.center,
                                               style: GoogleFonts.montserrat(
@@ -245,7 +246,7 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                                                   0.6,
                                               child: Text(
                                                 // '36 + 96 = 132',
-                                                allFlahcard.getAnswerByIndex(
+                                                allFlashcard.getAnswerByIndex(
                                                     widget.flashcard_id, index),
                                                 textAlign: TextAlign.center,
                                                 textDirection:
@@ -324,7 +325,7 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                               ),
                             ),
                             Text(
-                              '${flashcardIndex + 1}/${allFlahcard.getQuestionLength(widget.flashcard_id)}',
+                              '${flashcardIndex + 1}/${allFlashcard.getQuestionLength(widget.flashcard_id)}',
                               textAlign: TextAlign.center,
                               style: GoogleFonts.montserrat(
                                 textStyle: TextStyle(
@@ -358,11 +359,20 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                                     ),
                                     onPressed: () {
                                       if (flashcardIndex + 1 <
-                                          allFlahcard.getQuestionLength(
+                                          allFlashcard.getQuestionLength(
                                               widget.flashcard_id)) {
                                         setState(() {
                                           flashcardIndex++;
                                         });
+                                        if (flashcardIndex + 1 ==
+                                                allFlashcard.getQuestionLength(
+                                                    widget.flashcard_id) &&
+                                            !user.isStudied(
+                                                widget.flashcard_id)) {
+                                          // print(!user
+                                          //     .isStudied(widget.flashcard_id));
+                                          user.addStudied(widget.flashcard_id);
+                                        }
                                         pageController.nextPage(
                                             duration:
                                                 Duration(milliseconds: 300),

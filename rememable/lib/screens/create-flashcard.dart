@@ -80,6 +80,7 @@ class _CreateFlashcardState extends State<CreateFlashcard>
   Widget build(BuildContext context) {
     return Scaffold(body: Consumer2<AllFlashcard, Authen>(
         builder: (context, allFlashcard, user, child) {
+      int oldLength = allFlashcard.getLength();
       return Container(
           height: MediaQuery.of(context).size.height,
           child: loading
@@ -178,10 +179,32 @@ class _CreateFlashcardState extends State<CreateFlashcard>
                                       question,
                                       answer)
                                   .then((value) {
+                                // print("Value:${oldLength}");
+                                Future.delayed(
+                                    const Duration(milliseconds: 5000), () {
+                                  print(
+                                      "Value:${allFlashcard.getId(allFlashcard.getLength() - 1)}");
+                                  user.addOwnerFlashcardId(allFlashcard
+                                      .getId(allFlashcard.getLength() - 1));
+
+                                  // setState(() {
+                                  //   // Here you can write your code for open new view
+                                  // });
+                                });
+                                // while (oldLength == allFlashcard.getLength()) {
+                                //   print(
+                                //       "Length:${oldLength} ${allFlashcard.getLength()}");
+                                // }
+                                // print(
+                                //     "ValueFromAll:${allFlashcard.getId(allFlashcard.getLength() - 1)}");
+
+                                // user.addOwnerFlashcardId(value.toString());
                                 setState(() {
                                   loading = false;
                                 });
                                 Navigator.pop(context);
+                                print(
+                                    "ValueFromAll2:${allFlashcard.getId(allFlashcard.getLength() - 1)}");
                               });
                             }
                           },
