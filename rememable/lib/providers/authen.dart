@@ -310,11 +310,11 @@ class Authen with ChangeNotifier {
   //   return true;
   // }
 
-  // Future<void> logout() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   _token = null;
-  //   _uid = null;
-  //   prefs.clear();
-  //   notifyListeners();
-  // }
+  Future<void> logout() async {
+    // final prefs = await SharedPreferences.getInstance();
+    _token = null;
+    _uid = null;
+    // prefs.clear();
+    notifyListeners();
+  }
 }

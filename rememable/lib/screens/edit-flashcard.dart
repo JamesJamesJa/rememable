@@ -11,38 +11,34 @@ import 'package:provider/provider.dart';
 import 'package:rememable/providers/allFlashcard.dart';
 import 'package:rememable/providers/authen.dart';
 
-class CreateFlashcard extends StatefulWidget {
-  final int selectedTabIndex;
-  final Function changeIndex;
+class EditFlashcard extends StatefulWidget {
   final String flashcard_id;
-  const CreateFlashcard({
+  const EditFlashcard({
     Key key,
-    this.selectedTabIndex,
-    this.changeIndex,
     this.flashcard_id,
   }) : super(key: key);
   @override
-  _CreateFlashcardState createState() => _CreateFlashcardState();
+  _EditFlashcardState createState() => _EditFlashcardState();
 }
 
-class _CreateFlashcardState extends State<CreateFlashcard>
+class _EditFlashcardState extends State<EditFlashcard>
     with SingleTickerProviderStateMixin {
   List<TextEditingController> term = [
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController()
+    // TextEditingController(),
+    // TextEditingController(),
+    // TextEditingController()
   ];
   List<TextEditingController> definition = [
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController()
+    // TextEditingController(),
+    // TextEditingController(),
+    // TextEditingController()
   ];
   var titleController = TextEditingController();
   var descriptionController = TextEditingController();
 
   String categoryDropdown;
   bool loading = false;
-  int flashcardLength = 3;
+  int flashcardLength = 0;
   File imageFile;
   // Get image from gallery
   _getFromGallery() async {
@@ -52,6 +48,7 @@ class _CreateFlashcardState extends State<CreateFlashcard>
     // if (pickedFile != null) {
     setState(() {
       imageFile = File(pickedFile.path);
+      // print(pickedFile.path);
     });
     // }
   }
@@ -70,9 +67,40 @@ class _CreateFlashcardState extends State<CreateFlashcard>
     }
   }
 
+  // setLength(int newLength) {
+  //   setState(() {
+  //     flashcardLength = newLength;
+  //     print(flashcardLength);
+  //   });
+  // }
+
   @override
   void initState() {
     loading = false;
+    var provider = Provider.of<AllFlashcard>(context, listen: false);
+    titleController.text = provider.getNameById(widget.flashcard_id);
+    descriptionController.text =
+        provider.getDescriptionById(widget.flashcard_id);
+    categoryDropdown = provider.getCategoryById(widget.flashcard_id);
+    flashcardLength = provider.getQuestionLength(widget.flashcard_id);
+
+    for (var i = 0; i < flashcardLength; i++) {
+      term.add(TextEditingController(
+          text: provider.getQuestionByIndex(widget.flashcard_id, i)));
+      definition.add(TextEditingController(
+          text: provider.getAnswerByIndex(widget.flashcard_id, i)));
+    }
+    // imageFile =
+    provider
+        .getImageFileFromId(widget.flashcard_id)
+        .asStream()
+        .forEach((element) {
+      setState(() {
+        imageFile = element;
+      });
+    });
+    // print(flashcardLength);
+
     super.initState();
   }
 
@@ -80,7 +108,6 @@ class _CreateFlashcardState extends State<CreateFlashcard>
   Widget build(BuildContext context) {
     return Scaffold(body: Consumer2<AllFlashcard, Authen>(
         builder: (context, allFlashcard, user, child) {
-      int oldLength = allFlashcard.getLength();
       return Container(
           height: MediaQuery.of(context).size.height,
           child: loading
@@ -121,7 +148,7 @@ class _CreateFlashcardState extends State<CreateFlashcard>
                           padding: EdgeInsets.only(top: 40),
                           child: Center(
                             child: Text(
-                              'Create Flashcard',
+                              'Edit Flashcard',
                               style: GoogleFonts.montserrat(
                                 textStyle: TextStyle(
                                     color: Colors.white,
@@ -163,50 +190,27 @@ class _CreateFlashcardState extends State<CreateFlashcard>
                             setState(() {
                               loading = true;
                             });
-                            if (user.ownerCheck(widget.flashcard_id)) {
-                              setState(() {
-                                loading = false;
+                            allFlashcard
+                                .editFlashcard(
+                                    widget.flashcard_id,
+                                    titleController.text,
+                                    categoryDropdown,
+                                    descriptionController.text,
+                                    imageFile,
+                                    // user.getName(),
+                                    question,
+                                    answer)
+                                .then((value) {
+                              Future.delayed(const Duration(milliseconds: 5000),
+                                  () {
+                                // setState(() {
+                                //   loading = false;
+                                // });
                                 Navigator.pop(context);
                               });
-                            } else {
-                              allFlashcard
-                                  .addNewFlashcard(
-                                      titleController.text,
-                                      categoryDropdown,
-                                      descriptionController.text,
-                                      imageFile,
-                                      user.getName(),
-                                      question,
-                                      answer)
-                                  .then((value) {
-                                // print("Value:${oldLength}");
-                                Future.delayed(
-                                    const Duration(milliseconds: 5000), () {
-                                  // print(
-                                  //     "Value:${allFlashcard.getId(allFlashcard.getLength() - 1)}");
-                                  user.addOwnerFlashcardId(allFlashcard
-                                      .getId(allFlashcard.getLength() - 1));
 
-                                  // setState(() {
-                                  //   // Here you can write your code for open new view
-                                  // });
-                                });
-                                // while (oldLength == allFlashcard.getLength()) {
-                                //   print(
-                                //       "Length:${oldLength} ${allFlashcard.getLength()}");
-                                // }
-                                // print(
-                                //     "ValueFromAll:${allFlashcard.getId(allFlashcard.getLength() - 1)}");
-
-                                // user.addOwnerFlashcardId(value.toString());
-                                setState(() {
-                                  loading = false;
-                                });
-                                Navigator.pop(context);
-                                // print(
-                                //     "ValueFromAll2:${allFlashcard.getId(allFlashcard.getLength() - 1)}");
-                              });
-                            }
+                              // Navigator.pop(context);
+                            });
                           },
                         ),
                       ],

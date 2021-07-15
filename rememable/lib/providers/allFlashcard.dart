@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:http_parser/http_parser.dart';
-import 'package:path/path.dart';
+import 'package:network_to_file_image/network_to_file_image.dart';
+import 'package:path/path.dart' as p;
 import 'package:async/async.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -95,6 +97,7 @@ class AllFlashcard with ChangeNotifier {
         return _flashcard[i].name.toLowerCase().contains(word.toLowerCase());
       }
     }
+    return false;
   }
 
   int getQuestionLength(String id) {
@@ -154,6 +157,152 @@ class AllFlashcard with ChangeNotifier {
     }
   }
 
+  Future<File> getImageFileFromId(String id) async {
+    final response = await http.get(
+        Uri.parse('https://rememable.herokuapp.com${getImagePathById(id)}'));
+
+    // final documentDirectory = await getApplicationDocumentsDirectory();
+
+    // final file = File(join(documentDirectory.path, 'imagetest.png'));
+    // // 'rememable.herokuapp.com${getImagePathById(id)}', 'imagetest.png'));
+
+    // file.writeAsBytesSync(response.bodyBytes);
+    Directory _appDocsDir = await getTemporaryDirectory();
+    // print(_appDocsDir.toString());
+    File fileFromDocsDir(String filename) {
+      String pathName = p.join(_appDocsDir.path, filename);
+      return File(pathName);
+    }
+
+    File file = fileFromDocsDir(getImagePathById(id).split('uploads/')[1]);
+
+    file.writeAsBytesSync(response.bodyBytes);
+    return file;
+
+    // return NetworkToFileImage(
+    //   url: 'https://rememable.herokuapp.com${getImagePathById(id)}',
+    //   file: fileFromDocsDir("flutter.png"),
+    //   debug: true,
+    // );
+  }
+
+  Future<void> deleteFlashcardDB(String id) async {
+    try {
+      final res = await http.delete(
+          Uri.parse('https://rememable.herokuapp.com/flashcards/${id}'));
+      // final data = jsonDecode(res.body);
+      notifyListeners();
+    } catch (err) {
+      return throw (err);
+    }
+  }
+
+  void deleteFlashcard(String id) {
+    for (int i = 0; i < _flashcard.length; i++) {
+      if (_flashcard[i].id == id) {
+        _flashcard.removeAt(i);
+        break;
+      }
+    }
+  }
+
+  Future<void> editFlashcard(
+      String id,
+      String flashcard_name,
+      String category,
+      String description,
+      File cover_image,
+      // String owner_flashcard_name,
+      List<String> term,
+      List<String> definition) async {
+    try {
+      // String idTemp = "";
+      List<Question> allQuestion = [];
+      String cover_image_url = "";
+      String jsonQuestionId = "[";
+      for (int i = 0; i < term.length; i++) {
+        String jsonQuestion =
+            "{\"question\": \"${term[i]}\", \"answer\": \"${definition[i]}\"}";
+        var response = await http.post(
+            Uri.parse('https://rememable.herokuapp.com/questions'),
+            headers: {'Content-type': 'application/json'},
+            body: jsonQuestion);
+        final data = jsonDecode(response.body);
+        jsonQuestionId += "\"${data['id']}\",";
+        allQuestion.add(new Question(
+            id: data['id'],
+            question: data['question'],
+            answer: data['answer']));
+      }
+      if (jsonQuestionId[jsonQuestionId.length - 1] != "[") {
+        jsonQuestionId = jsonQuestionId.substring(0, jsonQuestionId.length - 1);
+      }
+      jsonQuestionId += "]";
+
+      List<int> imageBytes = cover_image.readAsBytesSync();
+      String imageType = cover_image.path.split('.').last;
+      var stream =
+          new http.ByteStream(DelegatingStream.typed(cover_image.openRead()));
+
+      var uri = Uri.parse('https://rememable.herokuapp.com/upload');
+      int length = imageBytes.length;
+      var request = new http.MultipartRequest("POST", uri);
+      var multipartFile = new http.MultipartFile('files', stream, length,
+          filename: p.basename(cover_image.path),
+          contentType: MediaType('image', '${imageType}'));
+
+      request.files.add(multipartFile);
+      String jsonTemp = "{";
+      var responseImage = await request.send().then((value) {
+        value.stream.transform(utf8.decoder).listen((event) async {
+          cover_image_url = event.split('url')[1].split('\"')[2];
+          jsonTemp += "\"flashcard_name\": \"${flashcard_name}\", ";
+          jsonTemp += "\"category\": \"${category}\", ";
+          jsonTemp += "\"description\": \"${description}\", ";
+          jsonTemp += "\"cover_image\": ${event.toString()},";
+          jsonTemp += "\"rating\": 0.0, ";
+          jsonTemp += "\"review_amount\": 0, ";
+          jsonTemp += "\"question_list\": {\"data\": ${jsonQuestionId}}}";
+          var response = await http
+              .put(
+                  Uri.parse('https://rememable.herokuapp.com/flashcards/${id}'),
+                  headers: {'Content-type': 'application/json'},
+                  body: jsonTemp)
+              .then((value) async {
+            final data = jsonDecode(value.body);
+
+            // flashcardDetails();
+            // final data = jsonDecode(value.body);
+            int indexTemp;
+            for (var i = 0; i < _flashcard.length; i++) {
+              if (_flashcard[i].id == id) {
+                // _flashcard[i].name = flashcard_name;
+                indexTemp = i;
+              }
+            }
+            Flashcard tempFlashcard = new Flashcard(
+              id: id,
+              name: flashcard_name,
+              category: category,
+              description: description,
+              coverImage: data['cover_image'][0]['url'],
+              rating: _flashcard[indexTemp].rating,
+              reviewAmount: _flashcard[indexTemp].reviewAmount,
+              ownerFlashcardName: _flashcard[indexTemp].ownerFlashcardName,
+              questionList: allQuestion,
+              reviewListId: _flashcard[indexTemp].reviewListId,
+            );
+            _flashcard.removeAt(indexTemp);
+            _flashcard.insert(indexTemp, tempFlashcard);
+            notifyListeners();
+          });
+        });
+      });
+    } catch (err) {
+      return throw (err);
+    }
+  }
+
   Future<String> addNewFlashcard(
       String flashcard_name,
       String category,
@@ -195,7 +344,7 @@ class AllFlashcard with ChangeNotifier {
       int length = imageBytes.length;
       var request = new http.MultipartRequest("POST", uri);
       var multipartFile = new http.MultipartFile('files', stream, length,
-          filename: basename(cover_image.path),
+          filename: p.basename(cover_image.path),
           contentType: MediaType('image', '${imageType}'));
 
       request.files.add(multipartFile);
@@ -232,7 +381,7 @@ class AllFlashcard with ChangeNotifier {
             ));
             setRatingIndex();
             notifyListeners();
-            print("DATA:ID:${data['id']}");
+            // print("DATA:ID:${data['id']}");
             return "data['id']";
             // return _flashcard[_flashcard.length - 1].id;
           });
@@ -245,6 +394,7 @@ class AllFlashcard with ChangeNotifier {
 
   Future<void> flashcardDetails() async {
     try {
+      _flashcard = [];
       final res = await http
           .get(Uri.parse('https://rememable.herokuapp.com/flashcards'));
       final data = jsonDecode(res.body);
@@ -362,4 +512,6 @@ class AllFlashcard with ChangeNotifier {
       return throw (err);
     }
   }
+
+  getApplicationDocumentsDirectory() {}
 }

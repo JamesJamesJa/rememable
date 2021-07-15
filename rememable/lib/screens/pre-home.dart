@@ -30,22 +30,11 @@ class _PreHomeState extends State<PreHome> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    // delayTime = 0;
-    Provider.of<Authen>(context, listen: false)
-        .login('testtest@mail.com', 'testtest')
-        .then((_) {
-      Provider.of<Authen>(context, listen: false).getUserProfile().then((_) {
-        Provider.of<AllFlashcard>(context, listen: false)
-            .flashcardDetails()
-            .then((_) {});
-      });
+    Provider.of<Authen>(context, listen: false).getUserProfile().then((_) {
+      Provider.of<AllFlashcard>(context, listen: false)
+          .flashcardDetails()
+          .then((_) {});
     });
-
-    // Future.delayed(const Duration(milliseconds: 6000), () {
-    //   setState(() {
-    //     delayTime = 1;
-    //   });
-    // });
     super.initState();
   }
 

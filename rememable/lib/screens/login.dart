@@ -1,10 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:rememable/providers/authen.dart';
 import 'package:rememable/screens/home.dart';
 import 'package:rememable/screens/pre-home.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  TextEditingController emailController = TextEditingController(text: "");
+  TextEditingController passController = TextEditingController(text: "");
+  bool isLoading = false;
+  bool isCorrect = false;
+
+  // @override
+  // void initState() {
+  //   // delayTime = 0;
+  //   // Provider.of<Authen>(context, listen: false).login('testtest@mail.com', 'testtest');
+
+  //   // Future.delayed(const Duration(milliseconds: 6000), () {
+  //   //   setState(() {
+  //   //     delayTime = 1;
+  //   //   });
+  //   // });
+  //   super.initState();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +92,7 @@ class Login extends StatelessWidget {
               child: Container(
                   padding: EdgeInsets.fromLTRB(10, 5, 20, 10),
                   child: TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                         icon: Container(
                           padding: EdgeInsets.only(left: 10.0, top: 5),
@@ -106,6 +133,7 @@ class Login extends StatelessWidget {
               child: Container(
                   padding: EdgeInsets.fromLTRB(10, 5, 20, 10),
                   child: TextField(
+                    controller: passController,
                     enableSuggestions: false,
                     autocorrect: false,
                     obscureText: true,
@@ -161,10 +189,52 @@ class Login extends StatelessWidget {
                     )),
               ),
               onTap: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => PreHome()));
+                // Provider.of<Authen>(context, listen: false)
+                //     .login('testtest@mail.com', 'testtest');
+                setState(() {
+                  isLoading = true;
+                });
+                Provider.of<Authen>(context, listen: false)
+                    .login(emailController.text, passController.text)
+                    .asStream()
+                    .forEach((element) {
+                  if (element) {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => PreHome()));
+                  } else {
+                    setState(() {
+                      isLoading = false;
+                      isCorrect = true;
+                    });
+                  }
+                });
               },
             ),
+            isLoading
+                ? Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 80),
+                      child: SpinKitRing(
+                        color: Colors.white,
+                        lineWidth: 4,
+                        size: 60.0,
+                      ),
+                    ),
+                  )
+                : isCorrect
+                    ? Container(
+                        margin: EdgeInsets.only(top: 30),
+                        child: Text(
+                          'Your email or password is incorrect!',
+                          style: GoogleFonts.montserrat(
+                            textStyle: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xffE36161),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ))
+                    : Container(),
           ],
         ),
       ),

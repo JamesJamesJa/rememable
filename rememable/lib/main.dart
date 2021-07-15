@@ -10,11 +10,6 @@ void main() => runApp(
         providers: [
           ChangeNotifierProvider(create: (context) => AllFlashcard()),
           ChangeNotifierProvider(create: (context) => Authen()),
-          // ChangeNotifierProvider(create: (context) => Teacher()),
-          //     ChangeNotifierProxyProvider<AllFlashcard, Authen>(
-          //     update: (context, allFlashcard, authen) => Authen(allFlashcard),
-          // create: (BuildContext context) => Authen(),
-          //   ),
         ],
         child: App(),
       ),
