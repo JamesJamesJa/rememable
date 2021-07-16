@@ -157,6 +157,67 @@ class AllFlashcard with ChangeNotifier {
     }
   }
 
+  int getReviewAmountById(String id) {
+    for (int i = 0; i < _flashcard.length; i++) {
+      if (_flashcard[i].id == id) {
+        return _flashcard[i].reviewAmount;
+      }
+    }
+  }
+
+  int getReviewLength(String id) {
+    for (int i = 0; i < _flashcard.length; i++) {
+      if (_flashcard[i].id == id) {
+        return _flashcard[i].reviewListId.length;
+      }
+    }
+  }
+
+  String getOwnerReviewNameByIndex(String id, int index) {
+    for (int i = 0; i < _flashcard.length; i++) {
+      if (_flashcard[i].id == id) {
+        return _flashcard[i].reviewListId[index].flashcardOwnerName;
+      }
+    }
+  }
+
+  String getCommentByIndex(String id, int index) {
+    for (int i = 0; i < _flashcard.length; i++) {
+      if (_flashcard[i].id == id) {
+        return _flashcard[i].reviewListId[index].comment;
+      }
+    }
+  }
+
+  int getRatingByIndex(String id, int index) {
+    for (int i = 0; i < _flashcard.length; i++) {
+      if (_flashcard[i].id == id) {
+        return _flashcard[i].reviewListId[index].rating;
+      }
+    }
+  }
+
+  String getReviewIdByIndex(String id, int index) {
+    for (int i = 0; i < _flashcard.length; i++) {
+      if (_flashcard[i].id == id) {
+        return _flashcard[i].reviewListId[index].id;
+      }
+    }
+  }
+
+  bool isReviewYet(String id, String name) {
+    for (int i = 0; i < _flashcard.length; i++) {
+      if (_flashcard[i].id == id) {
+        for (int j = 0; j < _flashcard[i].reviewListId.length; j++) {
+          if (_flashcard[i].reviewListId[j].flashcardOwnerName == name) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
   Future<File> getImageFileFromId(String id) async {
     final response = await http.get(
         Uri.parse('https://rememable.herokuapp.com${getImagePathById(id)}'));

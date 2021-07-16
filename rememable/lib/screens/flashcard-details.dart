@@ -11,6 +11,7 @@ import 'package:rememable/screens/edit-flashcard.dart';
 import 'package:rememable/screens/flashcard-test.dart';
 import 'package:rememable/screens/play-flashcard.dart';
 import 'package:focused_menu/focused_menu.dart';
+import 'package:rememable/screens/review.dart';
 // import 'package:kelena/models/user.dart';
 // import 'package:kelena/providers/student.dart';
 // import 'package:kelena/screens/firstCome.dart';
@@ -238,8 +239,7 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                   ),
                                   for (int index = 1; index <= 5; index++)
                                     (allFlashcard.getRatingById(
-                                                    widget.flashcard_id)) /
-                                                2 >=
+                                                widget.flashcard_id)) >=
                                             index.toDouble()
                                         ? Icon(
                                             // widget.fav ? Icons.favorite :
@@ -248,8 +248,7 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                             color: Color(0xFFFFDA55),
                                           )
                                         : (allFlashcard.getRatingById(
-                                                        widget.flashcard_id)) /
-                                                    2 >=
+                                                    widget.flashcard_id)) >=
                                                 index.toDouble() - 0.5
                                             ? Icon(
                                                 // widget.fav ? Icons.favorite :
@@ -497,69 +496,81 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                               ),
                             ],
                           ),
-                          Container(
-                            // height: MediaQuery.of(context).size.height * 0.38,
-                            width: MediaQuery.of(context).size.width * 0.8,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 1,
-                                  blurRadius: 7,
-                                  offset: Offset(2, 3),
-                                ),
-                              ],
-                            ),
-                            margin: EdgeInsets.only(top: 50, bottom: 50),
-                            padding: EdgeInsets.only(
-                                left: 30, top: 30, bottom: 30, right: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  // mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        'Rating  ${allFlashcard.getRatingById(widget.flashcard_id)} / 10',
-                                        style: GoogleFonts.montserrat(
-                                          textStyle: TextStyle(
-                                              color: Color(0xFF6C76C7),
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w400),
+                          GestureDetector(
+                            child: Container(
+                              // height: MediaQuery.of(context).size.height * 0.38,
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 7,
+                                    offset: Offset(2, 3),
+                                  ),
+                                ],
+                              ),
+                              margin: EdgeInsets.only(top: 50, bottom: 50),
+                              padding: EdgeInsets.only(
+                                  left: 30, top: 30, bottom: 30, right: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    // mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        child: Text(
+                                          'Rating  ${allFlashcard.getRatingById(widget.flashcard_id) * 2} / 10',
+                                          style: GoogleFonts.montserrat(
+                                            textStyle: TextStyle(
+                                                color: Color(0xFF6C76C7),
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.w400),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: 10),
-                                      child: Text(
-                                        'Rate & review this flashcard',
-                                        style: GoogleFonts.montserrat(
-                                          textStyle: TextStyle(
-                                              color: Color(0xFF6C76C7),
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.w400),
+                                      Container(
+                                        margin: EdgeInsets.only(top: 10),
+                                        child: Text(
+                                          'Rate & review this flashcard',
+                                          style: GoogleFonts.montserrat(
+                                            textStyle: TextStyle(
+                                                color: Color(0xFF6C76C7),
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.w400),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(bottom: 10),
-                                  child: IconButton(
-                                      icon: Icon(
-                                        // widget.fav ? Icons.favorite :
-                                        Icons.navigate_next_rounded,
-                                        size: 40,
-                                        color: Color(0xFFCECECE),
-                                      ),
-                                      onPressed: () {}),
-                                )
-                              ],
+                                    ],
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(bottom: 10),
+                                    child: IconButton(
+                                        icon: Icon(
+                                          // widget.fav ? Icons.favorite :
+                                          Icons.navigate_next_rounded,
+                                          size: 40,
+                                          color: Color(0xFFCECECE),
+                                        ),
+                                        onPressed: () {}),
+                                  )
+                                ],
+                              ),
                             ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Review(
+                                            flashcard_id: widget.flashcard_id,
+                                          )));
+                            },
                           ),
                         ],
                       ),
