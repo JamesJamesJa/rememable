@@ -218,6 +218,18 @@ class AllFlashcard with ChangeNotifier {
     return false;
   }
 
+  Future<void> logout() async {
+    _flashcard = [];
+    _review = [];
+    _question = [];
+    mathAmount = 0;
+    scienceAmount = 0;
+    languageAmount = 0;
+    codingAmount = 0;
+    List<int> ratingIndex = [];
+    notifyListeners();
+  }
+
   Future<File> getImageFileFromId(String id) async {
     final response = await http.get(
         Uri.parse('https://rememable.herokuapp.com${getImagePathById(id)}'));
@@ -264,6 +276,73 @@ class AllFlashcard with ChangeNotifier {
         _flashcard.removeAt(i);
         break;
       }
+    }
+  }
+
+  Future<void> addNewReview(
+    String id,
+    int rating,
+    String comment,
+    String ownerName,
+  ) async {
+    try {
+      String jsonReview =
+          "{ \"rating\": ${rating}, \"comment\": \"${comment}\", \"owner_name\": \"${ownerName}\" }";
+      var responseReview = await http
+          .post(Uri.parse('https://rememable.herokuapp.com/reviews'),
+              headers: {'Content-type': 'application/json'}, body: jsonReview)
+          .then((value) async {
+        final data = jsonDecode(value.body);
+        // print(
+        //     "ID = ${data['id']} ${data['rating']} ${data['comment']} ${data['owner_name']}");
+        int indexTemp;
+        for (var i = 0; i < _flashcard.length; i++) {
+          if (_flashcard[i].id == id) {
+            indexTemp = i;
+            _flashcard[i].reviewListId.add(new Review(
+                id: data['id'],
+                comment: comment,
+                flashcardOwnerName: ownerName,
+                rating: rating));
+            break;
+          }
+        }
+        Flashcard flashcardTemp = new Flashcard(
+          id: _flashcard[indexTemp].id,
+          name: _flashcard[indexTemp].name,
+          category: _flashcard[indexTemp].category,
+          description: _flashcard[indexTemp].description,
+          coverImage: _flashcard[indexTemp].coverImage,
+          rating: ((_flashcard[indexTemp].rating *
+                      _flashcard[indexTemp].reviewAmount) +
+                  rating) /
+              (_flashcard[indexTemp].reviewAmount + 1),
+          reviewAmount: _flashcard[indexTemp].reviewAmount + 1,
+          ownerFlashcardName: _flashcard[indexTemp].ownerFlashcardName,
+          questionList: _flashcard[indexTemp].questionList,
+          reviewListId: _flashcard[indexTemp].reviewListId,
+        );
+        _flashcard.removeAt(indexTemp);
+        _flashcard.insert(indexTemp, flashcardTemp);
+        // print(_flashcard[indexTemp].rating);
+        // print(_flashcard[indexTemp].reviewAmount);
+        String reviewListTemp = "";
+        for (var i = 0; i < _flashcard[indexTemp].reviewListId.length; i++) {
+          reviewListTemp += "\"${_flashcard[indexTemp].reviewListId[i].id}\", ";
+        }
+        reviewListTemp.substring(0, reviewListTemp.length - 2);
+        String jsonTemp =
+            "{\"rating\": ${_flashcard[indexTemp].rating}, \"review_amount\": ${_flashcard[indexTemp].reviewAmount}, \"review_list\": {\"data\": [${reviewListTemp}]}}";
+        // print(jsonTemp);
+        var responseUpdateFlashcard = await http
+            .put(Uri.parse('https://rememable.herokuapp.com/flashcards/${id}'),
+                headers: {'Content-type': 'application/json'}, body: jsonTemp)
+            .then((value) async {
+          final data = jsonDecode(value.body);
+        });
+      });
+    } catch (err) {
+      return throw (err);
     }
   }
 

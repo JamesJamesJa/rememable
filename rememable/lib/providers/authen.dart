@@ -28,6 +28,10 @@ class Authen with ChangeNotifier {
     return _profile;
   }
 
+  String getEmail() {
+    return _profile.email;
+  }
+
   bool isFav(String id) {
     for (int i = 0; i < _profile.favList.length; i++) {
       if (id == _profile.favList[i]) {
@@ -88,7 +92,7 @@ class Authen with ChangeNotifier {
       var response = await http.put(Uri.parse(publicAPI + 'users/$_uid'),
           headers: {'Content-type': 'application/json'}, body: jsonTemp);
       final data = jsonDecode(response.body);
-      print(data.toString());
+      // print(data.toString());
     } catch (err) {
       return throw (err);
     }
@@ -146,6 +150,22 @@ class Authen with ChangeNotifier {
 
   String getFavIdByIndex(int index) {
     return _profile.favList[index];
+  }
+
+  int getOwnLength() {
+    return _profile.ownFlashcardList.length;
+  }
+
+  String getOwnIdByIndex(int index) {
+    return _profile.ownFlashcardList[index];
+  }
+
+  int getStudiedLength() {
+    return _profile.studiedOwner.length;
+  }
+
+  String getStudiedIdByIndex(int index) {
+    return _profile.studiedOwner[index];
   }
 
   String getName() {

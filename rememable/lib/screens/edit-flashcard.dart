@@ -113,11 +113,11 @@ class _EditFlashcardState extends State<EditFlashcard>
           child: loading
               ? Center(
                   child: LoadingBouncingGrid.square(
-                    borderColor: Color(0xffFF8383),
+                    borderColor: Color(0xffF1E25C),
                     // borderColor: Color(0xff749BFF),
                     borderSize: 3.0,
                     size: 100.0,
-                    backgroundColor: Color(0xffFF8383),
+                    backgroundColor: Color(0xffF1E25C),
                     // backgroundColor: Color(0xff749BFF),
                     duration: Duration(milliseconds: 1200),
                   ),

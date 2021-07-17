@@ -227,6 +227,9 @@ class _FlashcardBoxState extends State<FlashcardBox> {
           // behavior: HitTestBehavior.translucent,
           onTap: () {
             // print(widget.flashcard_id);
+            if (!user.isStudied(widget.flashcard_id)) {
+              user.addStudied(widget.flashcard_id);
+            }
             Navigator.push(
                 context,
                 MaterialPageRoute(

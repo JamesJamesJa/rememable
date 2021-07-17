@@ -526,7 +526,7 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                     children: [
                                       Container(
                                         child: Text(
-                                          'Rating  ${allFlashcard.getRatingById(widget.flashcard_id) * 2} / 10',
+                                          'Rating  ${(allFlashcard.getRatingById(widget.flashcard_id) * 2).toStringAsFixed(1)} / 10',
                                           style: GoogleFonts.montserrat(
                                             textStyle: TextStyle(
                                                 color: Color(0xFF6C76C7),

@@ -364,15 +364,14 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                                         setState(() {
                                           flashcardIndex++;
                                         });
-                                        if (flashcardIndex + 1 ==
-                                                allFlashcard.getQuestionLength(
-                                                    widget.flashcard_id) &&
-                                            !user.isStudied(
-                                                widget.flashcard_id)) {
-                                          // print(!user
-                                          //     .isStudied(widget.flashcard_id));
-                                          user.addStudied(widget.flashcard_id);
-                                        }
+                                        // if (flashcardIndex + 1 ==
+                                        //         allFlashcard.getQuestionLength(
+                                        //             widget.flashcard_id) &&
+                                        //     ) {
+                                        //   // print(!user
+                                        //   //     .isStudied(widget.flashcard_id));
+                                        //
+                                        // }
                                         pageController.nextPage(
                                             duration:
                                                 Duration(milliseconds: 300),
