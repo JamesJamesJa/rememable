@@ -47,12 +47,10 @@ class _StudySetState extends State<StudySet>
               child: Column(
                 children: [
                   Container(
-                    // color: Colors.green,
                     height: MediaQuery.of(context).size.height * 0.12,
                     child: Row(
                       children: [
                         Container(
-                          // height: MediaQuery.of(context).size.height * 0.11,
                           width: MediaQuery.of(context).size.width * 0.15,
                           padding: EdgeInsets.only(top: 30.0),
                           child: IconButton(
@@ -81,7 +79,6 @@ class _StudySetState extends State<StudySet>
                           ),
                         ),
                         Container(
-                          // height: MediaQuery.of(context).size.height * 0.11,
                           width: MediaQuery.of(context).size.width * 0.15,
                           padding: EdgeInsets.only(top: 30.0),
                           child: IconButton(
@@ -99,7 +96,6 @@ class _StudySetState extends State<StudySet>
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height * 0.05,
-                    // color: Colors.red,
                     child: TabBar(
                       indicatorPadding: EdgeInsets.all(3),
                       labelPadding: EdgeInsets.all(0),
@@ -121,10 +117,6 @@ class _StudySetState extends State<StudySet>
                 ],
               ),
             ),
-            // Container(
-            //   height: MediaQuery.of(context).size.height * 0.7,
-            //   color: Colors.yellow,
-            // )
             Container(
               height: MediaQuery.of(context).size.height * 0.74,
               width: MediaQuery.of(context).size.width * 0.9,
@@ -132,36 +124,28 @@ class _StudySetState extends State<StudySet>
                 controller: _tabController,
                 children: [
                   Container(
-                      // width: MediaQuery.of(context).size.width * 0.8,
-                      // height: MediaQuery.of(context).size.height * 0.63,
                       child: ListView.builder(
                     padding: EdgeInsets.only(bottom: 30, top: 10),
                     scrollDirection: Axis.vertical,
                     itemBuilder: (ctx, index) =>
-
-                        // Container(),
                         allFlashcard.inSearch(user.getFavIdByIndex(index), "")
                             ? FlashcardBox(
                                 flashcard_id: user.getFavIdByIndex(index),
                                 index: index,
                               )
                             : Container(),
-                    // itemCount: 1,
                     itemCount: user.favLength(),
-                    // student != null ? teachersTest.length : 0,
                   )),
                   Container(
                       child: ListView.builder(
                     padding: EdgeInsets.only(bottom: 30, top: 10),
                     scrollDirection: Axis.vertical,
                     itemBuilder: (ctx, index) =>
-                        // Container(),
                         allFlashcard.inSearch(user.getOwnIdByIndex(index), "")
                             ? FlashcardBox(
                                 flashcard_id: user.getOwnIdByIndex(index),
                                 index: index)
                             : Container(),
-                    // itemCount: 1,
                     itemCount: user.getOwnLength(),
                   )),
                   Container(

@@ -104,11 +104,6 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height * 0.05,
-                    // padding: EdgeInsets.only(
-                    //   top: 10.0,
-                    //   bottom: 20,
-                    // ),
-                    // color: Colors.white,
                     child: TabBar(
                       indicatorPadding: EdgeInsets.all(3),
                       labelPadding: EdgeInsets.all(0),
@@ -137,8 +132,6 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                 controller: _tabController,
                 children: [
                   Container(
-                      // width: MediaQuery.of(context).size.width * 0.8,
-                      // height: MediaQuery.of(context).size.height * 0.63,
                       child: ListView.builder(
                     padding: EdgeInsets.only(bottom: 30, top: 10),
                     scrollDirection: Axis.vertical,
@@ -151,17 +144,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                                 .getId(allFlashcard.getIndexByRating(index)),
                             index: allFlashcard.getIndexByRating(index))
                         : Container(),
-                    // InstructorBox(
-                    //   id: teachersTest[index].id,
-                    //   name: teachersTest[index].name,
-                    //   fav: Provider.of<Student>(context)
-                    //       .checkFav(teachersTest[index].id),
-                    //   index: index,
-                    //   selectedTabIndex: widget.selectedTabIndex,
-                    //   changeIndex: widget.changeIndex,
-                    // ),
                     itemCount: allFlashcard.getLength(),
-                    // student != null ? teachersTest.length : 0,
                   )),
                   Container(
                       child: ListView.builder(

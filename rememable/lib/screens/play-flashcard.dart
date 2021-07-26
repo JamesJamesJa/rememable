@@ -5,32 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:rememable/providers/allFlashcard.dart';
 import 'package:rememable/providers/authen.dart';
-// import 'package:kelena/models/user.dart';
-// import 'package:kelena/providers/student.dart';
-// import 'package:kelena/screens/firstCome.dart';
-// import 'package:kelena/screens/instructorTime.dart';
-// import 'package:kelena/widgets/student/dialogAddSchedule.dart';
-// import 'package:provider/provider.dart';
 
 class PlayFlashcard extends StatefulWidget {
   final String flashcard_id;
-  // final User teacher;
-  // final String id, name, classNow;
-  // final bool fav;
-  // final int index;
-  // final int selectedTabIndex;
-  // final Function changeIndex;
   const PlayFlashcard({
     Key key,
     this.flashcard_id,
-    // this.teacher,
-    // this.id,
-    // this.name,
-    // this.classNow,
-    // this.fav,
-    // this.index,
-    // this.selectedTabIndex,
-    // this.changeIndex,
   }) : super(key: key);
   @override
   _PlayFlashcardState createState() => _PlayFlashcardState();
@@ -38,14 +18,11 @@ class PlayFlashcard extends StatefulWidget {
 
 class _PlayFlashcardState extends State<PlayFlashcard>
     with SingleTickerProviderStateMixin {
-  // List<String> term = [];
-  // List<String> definition = [];
   int flashcardIndex = 0;
   void setIndex(int value) {
     setState(() {
       flashcardIndex = value;
     });
-    // print(flashcardIndex);
   }
 
   PageController pageController = PageController();
@@ -68,8 +45,6 @@ class _PlayFlashcardState extends State<PlayFlashcard>
   }
 
   Widget build(BuildContext context) {
-    // int allFlashcard.getQuestionLength(widget.flashcard_id) = 6;
-
     return Scaffold(body: Consumer2<AllFlashcard, Authen>(
         builder: (context, allFlashcard, user, child) {
       return Container(
@@ -84,7 +59,6 @@ class _PlayFlashcardState extends State<PlayFlashcard>
               child: Column(
                 children: [
                   Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
                         height: MediaQuery.of(context).size.height * 0.11,
@@ -105,7 +79,7 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                         padding: EdgeInsets.only(top: 40),
                         child: Center(
                           child: Text(
-                            'Number Addition',
+                            '${allFlashcard.getNameById(widget.flashcard_id)}',
                             style: GoogleFonts.montserrat(
                               textStyle: TextStyle(
                                   color: Colors.white,
@@ -118,7 +92,6 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                     ],
                   ),
                   Container(
-                    // width: MediaQuery.of(context).size.width,
                     width: allFlashcard.getQuestionLength(widget.flashcard_id) <
                             10
                         ? (allFlashcard.getQuestionLength(widget.flashcard_id) *
@@ -130,12 +103,9 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                         : MediaQuery.of(context).size.width,
                     height: 26,
                     child: ListView.builder(
-                      // shrinkWrap: true,
-                      // addSemanticIndexes: false,
                       scrollDirection: Axis.horizontal,
                       itemCount:
                           allFlashcard.getQuestionLength(widget.flashcard_id),
-                      // controller: indexController,
                       itemBuilder: (BuildContext context, int index) =>
                           Container(
                         width: 26,
@@ -147,7 +117,6 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                               : index > flashcardIndex
                                   ? Color(0xffDADADA)
                                   : Color(0xffCBADF6),
-                          // : Color(0xffDAC5F8),
                           borderRadius: BorderRadius.circular(100),
                         ),
                         child: Center(
@@ -168,7 +137,6 @@ class _PlayFlashcardState extends State<PlayFlashcard>
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.84,
-              // padding: EdgeInsets.only(top: 10),
               child: Stack(
                 children: [
                   PageView.builder(
@@ -193,8 +161,6 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                                       MediaQuery.of(context).size.width * 0.8,
                                   height:
                                       MediaQuery.of(context).size.width * 0.8,
-                                  // width: 200,
-                                  // height: 200,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(16),
@@ -220,7 +186,6 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                                                     .width *
                                                 0.6,
                                             child: Text(
-                                              // 'What is the value of\n36 + 96 ?',
                                               allFlashcard.getQuestionByIndex(
                                                   widget.flashcard_id, index),
                                               textAlign: TextAlign.center,
@@ -235,8 +200,7 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                                           )
                                         : Transform(
                                             transform: Matrix4.identity()
-                                              ..setEntry(
-                                                  3, 2, 0.001) // perspective
+                                              ..setEntry(3, 2, 0.001)
                                               ..rotateY(pi * _animation.value),
                                             alignment: FractionalOffset.center,
                                             child: Container(
@@ -245,7 +209,6 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                                                       .width *
                                                   0.6,
                                               child: Text(
-                                                // '36 + 96 = 132',
                                                 allFlashcard.getAnswerByIndex(
                                                     widget.flashcard_id, index),
                                                 textAlign: TextAlign.center,
@@ -271,7 +234,6 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                                   } else {
                                     _animationController.reverse();
                                   }
-                                  // print(_animation.value);
                                 },
                               ),
                             ),
@@ -279,7 +241,6 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                         );
                       }),
                   Column(
-                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         width: MediaQuery.of(context).size.width * 0.7,
@@ -364,14 +325,6 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                                         setState(() {
                                           flashcardIndex++;
                                         });
-                                        // if (flashcardIndex + 1 ==
-                                        //         allFlashcard.getQuestionLength(
-                                        //             widget.flashcard_id) &&
-                                        //     ) {
-                                        //   // print(!user
-                                        //   //     .isStudied(widget.flashcard_id));
-                                        //
-                                        // }
                                         pageController.nextPage(
                                             duration:
                                                 Duration(milliseconds: 300),
@@ -383,90 +336,8 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                           ],
                         ),
                       ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     GestureDetector(
-                      //       child: Container(
-                      //         alignment: Alignment.center,
-                      //         width: MediaQuery.of(context).size.width * 0.38,
-                      //         height: 44,
-                      //         margin: EdgeInsets.only(
-                      //             left: MediaQuery.of(context).size.width * 0.1,
-                      //             top: 50),
-                      //         decoration: BoxDecoration(
-                      //           color: Color(0xFFB0C4F7),
-                      //           borderRadius: BorderRadius.circular(10),
-                      //           boxShadow: [
-                      //             BoxShadow(
-                      //               color: Colors.grey.withOpacity(0.5),
-                      //               spreadRadius: 2,
-                      //               blurRadius: 7,
-                      //               offset: Offset(2, 3),
-                      //             ),
-                      //           ],
-                      //         ),
-                      //         child: Container(
-                      //             // padding: EdgeInsets.only(left: 0, right: 10),
-                      //             child: Text(
-                      //           'Play flashcard',
-                      //           style: GoogleFonts.montserrat(
-                      //             textStyle: TextStyle(
-                      //               fontSize: 14,
-                      //               color: Colors.white,
-                      //               fontWeight: FontWeight.w400,
-                      //             ),
-                      //           ),
-                      //         )),
-                      //       ),
-                      //       onTap: () {
-                      //         // Navigator.pushReplacement(context,
-                      //         //     MaterialPageRoute(builder: (context) => PreHome()));
-                      //       },
-                      //     ),
-                      //     GestureDetector(
-                      //       child: Container(
-                      //         alignment: Alignment.center,
-                      //         width: MediaQuery.of(context).size.width * 0.38,
-                      //         height: 44,
-                      //         margin: EdgeInsets.only(
-                      //             right: MediaQuery.of(context).size.width * 0.1,
-                      //             top: 50),
-                      //         decoration: BoxDecoration(
-                      //           color: Color(0xFFDAC5F8),
-                      //           borderRadius: BorderRadius.circular(10),
-                      //           boxShadow: [
-                      //             BoxShadow(
-                      //               color: Colors.grey.withOpacity(0.5),
-                      //               spreadRadius: 2,
-                      //               blurRadius: 7,
-                      //               offset: Offset(2, 3),
-                      //             ),
-                      //           ],
-                      //         ),
-                      //         child: Container(
-                      //             // padding: EdgeInsets.only(left: 0, right: 10),
-                      //             child: Text(
-                      //           'Take the test',
-                      //           style: GoogleFonts.montserrat(
-                      //             textStyle: TextStyle(
-                      //               fontSize: 14,
-                      //               color: Colors.white,
-                      //               fontWeight: FontWeight.w400,
-                      //             ),
-                      //           ),
-                      //         )),
-                      //       ),
-                      //       onTap: () {
-                      //         // Navigator.pushReplacement(context,
-                      //         //     MaterialPageRoute(builder: (context) => PreHome()));
-                      //       },
-                      //     ),
-                      //   ],
-                      // ),
                       GestureDetector(
                         child: Container(
-                          // height: MediaQuery.of(context).size.height * 0.38,
                           width: MediaQuery.of(context).size.width * 0.7,
                           height: 50,
                           decoration: BoxDecoration(
@@ -484,7 +355,6 @@ class _PlayFlashcardState extends State<PlayFlashcard>
                           margin: EdgeInsets.only(
                               top: 50,
                               left: MediaQuery.of(context).size.width * 0.15),
-                          // padding: EdgeInsets.only(top: 10, bottom: 10),
                           child: Center(
                             child: Text(
                               _animationController.value < 0.5

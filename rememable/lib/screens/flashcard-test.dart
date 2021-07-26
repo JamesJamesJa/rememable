@@ -5,32 +5,12 @@ import 'package:rememable/providers/allFlashcard.dart';
 import 'package:rememable/providers/authen.dart';
 import 'package:rememable/widgets/animation/show-up.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-// import 'package:kelena/models/user.dart';
-// import 'package:kelena/providers/student.dart';
-// import 'package:kelena/screens/firstCome.dart';
-// import 'package:kelena/screens/instructorTime.dart';
-// import 'package:kelena/widgets/student/dialogAddSchedule.dart';
-// import 'package:provider/provider.dart';
 
 class FlashcardTest extends StatefulWidget {
   final String flashcard_id;
-  // final User teacher;
-  // final String id, name, classNow;
-  // final bool fav;
-  // final int index;
-  // final int selectedTabIndex;
-  // final Function changeIndex;
   const FlashcardTest({
     Key key,
     this.flashcard_id,
-    // this.teacher,
-    // this.id,
-    // this.name,
-    // this.classNow,
-    // this.fav,
-    // this.index,
-    // this.selectedTabIndex,
-    // this.changeIndex,
   }) : super(key: key);
   @override
   _FlashcardTestState createState() => _FlashcardTestState();
@@ -48,15 +28,11 @@ class _FlashcardTestState extends State<FlashcardTest> {
     setState(() {
       flashcardIndex = value;
     });
-    // print(flashcardIndex);
   }
 
   PageController pageController = PageController();
 
   Widget build(BuildContext context) {
-    // int flashcardLength = 3;
-    // int flashcardLength = 10;
-
     return Scaffold(body: Consumer2<AllFlashcard, Authen>(
         builder: (context, allFlashcard, user, child) {
       return Container(
@@ -71,7 +47,6 @@ class _FlashcardTestState extends State<FlashcardTest> {
               child: Column(
                 children: [
                   Stack(
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
                         height: MediaQuery.of(context).size.height * 0.11,
@@ -105,7 +80,6 @@ class _FlashcardTestState extends State<FlashcardTest> {
                                 ),
                               )
                             : Container(
-                                // width: MediaQuery.of(context).size.width,
                                 width: allFlashcard.getQuestionLength(
                                             widget.flashcard_id) <
                                         8
@@ -116,22 +90,14 @@ class _FlashcardTestState extends State<FlashcardTest> {
                                                     widget.flashcard_id) *
                                                 26) +
                                         0.0
-                                    // MediaQuery.of(context).size.width
                                     : MediaQuery.of(context).size.width * 0.74,
                                 margin: EdgeInsets.only(top: 70),
-                                // alignment: Alignment.topCenter,
                                 height: 26,
                                 child: ListView.builder(
-                                  // addAutomaticKeepAlives: true,
-                                  // shrinkWrap: false,
-                                  // reverse: true,
-                                  // addSemanticIndexes: true,
                                   controller: flashcardNumberController,
                                   scrollDirection: Axis.horizontal,
                                   itemCount: allFlashcard
                                       .getQuestionLength(widget.flashcard_id),
-
-                                  // controller: indexController,
                                   itemBuilder:
                                       (BuildContext context, int index) =>
                                           Container(
@@ -145,7 +111,6 @@ class _FlashcardTestState extends State<FlashcardTest> {
                                           : index > flashcardIndex
                                               ? Color(0xffDADADA)
                                               : Color(0xffCBADF6),
-                                      // : Color(0xffDAC5F8),
                                       borderRadius: BorderRadius.circular(100),
                                     ),
                                     child: Center(
@@ -162,21 +127,6 @@ class _FlashcardTestState extends State<FlashcardTest> {
                                 ),
                               ),
                       ),
-                      // Container(
-                      //   width: MediaQuery.of(context).size.width * 0.7,
-                      //   padding: EdgeInsets.only(top: 40),
-                      //   child: Center(
-                      //     child: Text(
-                      //       'Number Addition',
-                      //       style: GoogleFonts.montserrat(
-                      //         textStyle: TextStyle(
-                      //             color: Colors.white,
-                      //             fontSize: 24.0,
-                      //             fontWeight: FontWeight.w400),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ],
@@ -185,7 +135,6 @@ class _FlashcardTestState extends State<FlashcardTest> {
             Container(
               height: MediaQuery.of(context).size.height * 0.84,
               width: MediaQuery.of(context).size.width,
-              // padding: EdgeInsets.only(top: 10),
               child: flashcardIndex ==
                       allFlashcard.getQuestionLength(widget.flashcard_id)
                   ? Column(children: [
@@ -199,7 +148,6 @@ class _FlashcardTestState extends State<FlashcardTest> {
                               SfRadialGauge(
                                 axes: <RadialAxis>[
                                   RadialAxis(
-                                    // labelFormat: "",
                                     showTicks: false,
                                     showLabels: false,
                                     startAngle: 150,
@@ -255,7 +203,6 @@ class _FlashcardTestState extends State<FlashcardTest> {
                                             Container(
                                               padding: EdgeInsets.only(top: 12),
                                               child: Text('%',
-                                                  // textAlign: TextAlign.end,
                                                   style: GoogleFonts.montserrat(
                                                       textStyle: TextStyle(
                                                     color: Color(0xFF6C76C7),
@@ -269,7 +216,6 @@ class _FlashcardTestState extends State<FlashcardTest> {
                                       ShowUp(
                                         delay: 1300,
                                         child: Text('YOUR SCORE',
-                                            // textAlign: TextAlign.end,
                                             style: GoogleFonts.montserrat(
                                                 textStyle: TextStyle(
                                               color: Color(0xFF6C76C7),
@@ -295,7 +241,6 @@ class _FlashcardTestState extends State<FlashcardTest> {
                                       : scorePercent < 100
                                           ? 'Try a little more'
                                           : 'Congraturation!',
-                              // textAlign: TextAlign.end,
                               style: GoogleFonts.montserrat(
                                   textStyle: TextStyle(
                                 color: Color(0xFF6C76C7),
@@ -410,7 +355,6 @@ class _FlashcardTestState extends State<FlashcardTest> {
                                             MediaQuery.of(context).size.width *
                                                 0.6,
                                         child: Text(
-                                          // 'What is the value of\n36 + 96 ?',
                                           allFlashcard.getQuestionByIndex(
                                               widget.flashcard_id,
                                               flashcardIndex),
@@ -576,7 +520,6 @@ class _FlashcardTestState extends State<FlashcardTest> {
                                     answerController.text = "";
                                     answerControllerTemp.text = "";
                                     flashcardIndex++;
-                                    print(flashcardIndex);
                                     if (flashcardIndex > 3 &&
                                         flashcardIndex + 3 <
                                             allFlashcard.getQuestionLength(

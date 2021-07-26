@@ -66,8 +66,6 @@ class Authen with ChangeNotifier {
     try {
       var response = await http.put(Uri.parse(publicAPI + 'users/$_uid'),
           headers: {'Content-type': 'application/json'}, body: jsonTemp);
-      // final data = jsonDecode(response.body);
-      // print(data.toString());
     } catch (err) {
       return throw (err);
     }
@@ -92,7 +90,6 @@ class Authen with ChangeNotifier {
       var response = await http.put(Uri.parse(publicAPI + 'users/$_uid'),
           headers: {'Content-type': 'application/json'}, body: jsonTemp);
       final data = jsonDecode(response.body);
-      // print(data.toString());
     } catch (err) {
       return throw (err);
     }
@@ -119,11 +116,9 @@ class Authen with ChangeNotifier {
 
     jsonTemp = jsonTemp + "]}}";
 
-    // print(jsonTemp);
     try {
       var response = await http.put(Uri.parse(publicAPI + 'users/$_uid'),
           headers: {'Content-type': 'application/json'}, body: jsonTemp);
-      // body: jsonEncode(_profile.favList));
     } catch (err) {
       return throw (err);
     }
@@ -136,12 +131,6 @@ class Authen with ChangeNotifier {
       return false;
     }
     return true;
-    // for (int i = 0; i < _profile.ownFlashcardList.length; i++) {
-    //   if (id == _profile.ownFlashcardList[i]) {
-    //     return true;
-    //   }
-    // }
-    // return false;
   }
 
   int favLength() {
@@ -195,7 +184,6 @@ class Authen with ChangeNotifier {
       for (int i = 0; i < data['studied_flashcard_list']['data'].length; i++) {
         studiedOwner.add(data['studied_flashcard_list']['data'][i].toString());
       }
-      // print(studiedOwner);
       _profile = new User(
         id: data['id'],
         name: data['name'],
@@ -204,68 +192,12 @@ class Authen with ChangeNotifier {
         favList: favList,
         ownFlashcardList: ownFlashcardList,
         studiedOwner: studiedOwner,
-
-        // 'phone_num': data['phone_num'],
-        // 'email': data['email'],
-        // 'picture': data['picture'],
-        // 'address': data['address'],
-        // 'sub_district': data['sub_district'],
-        // 'district': data['district'],
-        // 'province': data['province'],
-        // 'country': data['country'],
-        // 'zip_code': data['zip_code'],
       );
       notifyListeners();
-      // return profile;
     } catch (err) {
       return throw (err);
     }
   }
-
-  // Future<void> signup(
-  //     String firstName,
-  //     String lastName,
-  //     String email,
-  //     String phoneNum,
-  //     String password,
-  //     String addressInfo,
-  //     String subDistrict,
-  //     String district,
-  //     String province,
-  //     String country,
-  //     String zipCode) async {
-  //   var endpoint = publicAPI + 'users/signup';
-
-  //   try {
-  //     final res = await http.post(Uri.parse(endpoint), body: {
-  //       'firstName': firstName,
-  //       'lastName': lastName,
-  //       'email': email,
-  //       'phoneNum': phoneNum,
-  //       'password': password,
-  //       'address': addressInfo,
-  //       'sub_district': subDistrict,
-  //       'district': district,
-  //       'province': province,
-  //       'country': country,
-  //       'zip_code': zipCode
-  //     });
-  //     final data = jsonDecode(res.body);
-
-  //     if (data == null) return;
-
-  //     if (res.statusCode == 201) {
-  //       _token = data['token'];
-  //       _uid = data['uid'];
-  //     } else if (res.statusCode == 400) {
-  //       print('Something went wrong. Please Try Again');
-  //     }
-
-  //     notifyListeners();
-  //   } catch (err) {
-  //     return throw (err);
-  //   }
-  // }
 
   Future<bool> login(String email, String password) async {
     var endpoint = publicAPI + 'auth/local';
@@ -280,10 +212,6 @@ class Authen with ChangeNotifier {
       _token = data['jwt'];
       _uid = data['user']['id'];
 
-      // final prefs = await SharedPreferences.getInstance();
-      // final user = json.encode({'token': _token, 'uid': _uid});
-      // prefs.setString('user', user);
-
       notifyListeners();
 
       return true;
@@ -292,49 +220,9 @@ class Authen with ChangeNotifier {
     }
   }
 
-  // Future<void> updateAddFavList(String flashcard_id) async {
-  //   var endpoint = publicAPI + 'user/$flashcard_id';
-
-  //   try {
-  //     final res = await http
-  //         .post(Uri.parse(endpoint), body: {"id": flashcard_id, "": password});
-  //     final data = jsonDecode(res.body);
-
-  //     if (res.statusCode == 400) return false;
-
-  //     _token = data['jwt'];
-  //     _uid = data['user']['id'];
-
-  //     // final prefs = await SharedPreferences.getInstance();
-  //     // final user = json.encode({'token': _token, 'uid': _uid});
-  //     // prefs.setString('user', user);
-
-  //     notifyListeners();
-
-  //     return true;
-  //   } catch (err) {
-  //     return throw (err);
-  //   }
-  // }
-
-  // Future<bool> autoLogin() async {
-  //   final prefs = await SharedPreferences.getInstance();
-
-  //   if (!prefs.containsKey('user')) return false;
-
-  //   final user = json.decode(prefs.getString('user'));
-  //   _token = user['token'];
-  //   _uid = user['uid'];
-  //   notifyListeners();
-
-  //   return true;
-  // }
-
   Future<void> logout() async {
-    // final prefs = await SharedPreferences.getInstance();
     _token = null;
     _uid = null;
-    // prefs.clear();
     notifyListeners();
   }
 }

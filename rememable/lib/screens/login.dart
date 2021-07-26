@@ -18,19 +18,6 @@ class _LoginState extends State<Login> {
   bool isLoading = false;
   bool isCorrect = false;
 
-  // @override
-  // void initState() {
-  //   // delayTime = 0;
-  //   // Provider.of<Authen>(context, listen: false).login('testtest@mail.com', 'testtest');
-
-  //   // Future.delayed(const Duration(milliseconds: 6000), () {
-  //   //   setState(() {
-  //   //     delayTime = 1;
-  //   //   });
-  //   // });
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,8 +176,6 @@ class _LoginState extends State<Login> {
                     )),
               ),
               onTap: () {
-                // Provider.of<Authen>(context, listen: false)
-                //     .login('testtest@mail.com', 'testtest');
                 setState(() {
                   isLoading = true;
                 });

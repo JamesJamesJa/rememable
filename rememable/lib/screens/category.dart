@@ -10,13 +10,9 @@ import 'package:rememable/widgets/home-screen-widget/flashcard-category.dart';
 
 class Category extends StatefulWidget {
   final String category;
-  // final int selectedTabIndex;
-  // final Function changeIndex;
   const Category({
     Key key,
     this.category,
-    // this.selectedTabIndex,
-    // this.changeIndex,
   }) : super(key: key);
   @override
   _CategoryState createState() => _CategoryState();
@@ -91,37 +87,6 @@ class _CategoryState extends State<Category>
                             : Container(),
                     itemCount: allFlashcard.getLength(),
                   )),
-              // SingleChildScrollView(
-              //   scrollDirection: Axis.vertical,
-              //   child: Column(
-              //     children: [
-              //       Image.network(
-              //           'https://flutter-examples.com/wp-content/uploads/2019/09/blossom.jpg',
-              //           width: 300,
-              //           height: 200,
-              //           fit: BoxFit.contain),
-              //       Image.network(
-              //           'https://flutter-examples.com/wp-content/uploads/2019/09/sample_img.png',
-              //           width: 200,
-              //           fit: BoxFit.contain),
-              //       Text('Some Sample Text - 1',
-              //           style: TextStyle(fontSize: 28)),
-              //       Image.network(
-              //           'https://flutter-examples.com/wp-content/uploads/2019/09/blossom.jpg',
-              //           width: 300,
-              //           height: 200,
-              //           fit: BoxFit.contain),
-              //       Container(
-              //           height: MediaQuery.of(context).size.height * 0.3,
-              //           width: MediaQuery.of(context).size.width,
-              //           child: ListView.builder(
-              //             // scrollDirection: Axis.vertical,
-              //             itemBuilder: (ctx, index) => FlashcardBox(),
-              //             itemCount: 10,
-              //           )),
-              //     ],
-              //   ),
-              // ),
             ),
           ],
         ),

@@ -40,9 +40,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
             ),
             Container(
               margin: EdgeInsets.only(top: 110, left: 150),
-              child: Text(
-                  // 'Teerapat M.',
-                  user.getName(),
+              child: Text(user.getName(),
                   style: GoogleFonts.montserrat(
                       fontSize: 24,
                       fontWeight: FontWeight.w400,
@@ -93,10 +91,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   Container(
                     margin: EdgeInsets.only(bottom: 18),
                     child: GestureDetector(
-                      // onTap: () => Navigator.push(
-                      //   context,
-                      // MaterialPageRoute(builder: (context) => ),
-                      // ),
                       child: Row(
                         children: [
                           Container(
@@ -106,8 +100,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                 Icons.email,
                                 color: Color(0xFFAFAFAF),
                                 size: 24.0,
-                                // semanticLabel:
-                                //     'Text to announce in accessibility modes',
                               )),
                           Container(
                             width: MediaQuery.of(context).size.width * 0.2,
@@ -127,22 +119,15 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                               Icons.navigate_next,
                               color: Color(0xFFAFAFAF),
                               size: 24.0,
-                              // semanticLabel:
-                              //     'Text to announce in accessibility modes',
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-
                   Container(
                     margin: EdgeInsets.only(bottom: 18),
                     child: GestureDetector(
-                      // onTap: () => Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => ),
-                      // ),
                       child: Row(
                         children: [
                           Container(
@@ -152,8 +137,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                 Icons.person,
                                 color: Color(0xFFAFAFAF),
                                 size: 24.0,
-                                // semanticLabel:
-                                //     'Text to announce in accessibility modes',
                               )),
                           Container(
                             width: MediaQuery.of(context).size.width * 0.25,
@@ -179,7 +162,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       ),
                     ),
                   ),
-
                   GestureDetector(
                     onTap: () {
                       Navigator.pushReplacement(context,
@@ -221,8 +203,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       ),
                     ),
                   )
-
-                  // 3
                 ],
               ),
             )

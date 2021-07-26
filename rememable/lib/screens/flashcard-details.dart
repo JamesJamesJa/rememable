@@ -12,32 +12,12 @@ import 'package:rememable/screens/flashcard-test.dart';
 import 'package:rememable/screens/play-flashcard.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:rememable/screens/review.dart';
-// import 'package:kelena/models/user.dart';
-// import 'package:kelena/providers/student.dart';
-// import 'package:kelena/screens/firstCome.dart';
-// import 'package:kelena/screens/instructorTime.dart';
-// import 'package:kelena/widgets/student/dialogAddSchedule.dart';
-// import 'package:provider/provider.dart';
 
 class FlashcardDetails extends StatefulWidget {
   final String flashcard_id;
-  // final User teacher;
-  // final String id, name, classNow;
-  // final bool fav;
-  // final int index;
-  // final int selectedTabIndex;
-  // final Function changeIndex;
   const FlashcardDetails({
     Key key,
     this.flashcard_id,
-    // this.teacher,
-    // this.id,
-    // this.name,
-    // this.classNow,
-    // this.fav,
-    // this.index,
-    // this.selectedTabIndex,
-    // this.changeIndex,
   }) : super(key: key);
   @override
   _FlashcardDetailsState createState() => _FlashcardDetailsState();
@@ -46,18 +26,15 @@ class FlashcardDetails extends StatefulWidget {
 class _FlashcardDetailsState extends State<FlashcardDetails> {
   bool isDeleting = false;
   Widget build(BuildContext context) {
-    // User user = Provider.of<Authen>(context).profile;
     return Scaffold(body: Consumer2<AllFlashcard, Authen>(
         builder: (context, allFlashcard, user, child) {
       return isDeleting
           ? Center(
               child: LoadingBouncingGrid.square(
                 borderColor: Color(0xff88E3A7),
-                // borderColor: Color(0xff749BFF),
                 borderSize: 3.0,
                 size: 100.0,
                 backgroundColor: Color(0xff88E3A7),
-                // backgroundColor: Color(0xff749BFF),
                 duration: Duration(milliseconds: 1200),
               ),
             )
@@ -71,7 +48,6 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                     width: MediaQuery.of(context).size.width,
                     color: Color(0xFF749BFF),
                     child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Container(
                           height: MediaQuery.of(context).size.height * 0.12,
@@ -93,7 +69,6 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                           child: Center(
                             child: Text(
                               '${allFlashcard.getNameById(widget.flashcard_id)}',
-                              // 'Number Addition',
                               style: GoogleFonts.montserrat(
                                 textStyle: TextStyle(
                                     color: Colors.white,
@@ -128,11 +103,9 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                     FocusedMenuItem(
                                         title: Text(
                                           "Delete",
-                                          // style: TextStyle(color: Colors.redAccent),
                                         ),
                                         trailingIcon: Icon(
                                           Icons.delete,
-                                          // color: Colors.redAccent,
                                         ),
                                         onPressed: () {
                                           setState(() {
@@ -182,7 +155,6 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                   child: Text(
                                     "Owner",
                                     style: TextStyle(
-                                        // color: 1 == 1
                                         color:
                                             user.ownerCheck(widget.flashcard_id)
                                                 ? Color(0xFFB8B8B8)
@@ -203,7 +175,6 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                     ),
                                     onPressed: () {
                                       user.manageFav(widget.flashcard_id);
-                                      // student.manageFav(widget.id);
                                     },
                                   ),
                                 ),
@@ -242,7 +213,6 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                                 widget.flashcard_id)) >=
                                             index.toDouble()
                                         ? Icon(
-                                            // widget.fav ? Icons.favorite :
                                             Icons.star_outlined,
                                             size: 28,
                                             color: Color(0xFFFFDA55),
@@ -251,70 +221,20 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                                     widget.flashcard_id)) >=
                                                 index.toDouble() - 0.5
                                             ? Icon(
-                                                // widget.fav ? Icons.favorite :
                                                 Icons.star_half_outlined,
                                                 size: 28,
                                                 color: Color(0xFFFFDA55),
                                               )
                                             : Icon(
-                                                // widget.fav ? Icons.favorite :
                                                 Icons.star_border_outlined,
                                                 size: 28,
                                                 color: Color(0xFFFFDA55),
                                               ),
-
-                                  // ListView.builder(
-                                  //     scrollDirection: Axis.vertical,
-                                  //     itemCount: 5,
-                                  //     itemBuilder: (ctx, index) =>
-                                  //         (9.toDouble() / 2) >= index.toDouble()
-                                  //             ? Icon(
-                                  //                 // widget.fav ? Icons.favorite :
-                                  //                 Icons.star_outlined,
-                                  //                 size: 28,
-                                  //                 color: Color(0xFFFFDA55),
-                                  //               )
-                                  //             : (9.toDouble() / 2) >=
-                                  //                     index.toDouble() - 0.5
-                                  //                 ? Icon(
-                                  //                     // widget.fav ? Icons.favorite :
-                                  //                     Icons.star_half_outlined,
-                                  //                     size: 28,
-                                  //                     color: Color(0xFFFFDA55),
-                                  //                   )
-                                  //                 : Icon(
-                                  //                     // widget.fav ? Icons.favorite :
-                                  //                     Icons.star_border_outlined,
-                                  //                     size: 28,
-                                  //                     color: Color(0xFFFFDA55),
-                                  //                   ),
-                                  //                   ),
-                                  // Icon(
-                                  //   Icons.star_outlined,
-                                  //   size: 28,
-                                  //   color: Color(0xFFFFDA55),
-                                  // ),
-                                  // Icon(
-                                  //   Icons.star_outlined,
-                                  //   size: 28,
-                                  //   color: Color(0xFFFFDA55),
-                                  // ),
-                                  // Icon(
-                                  //   Icons.star_half_outlined,
-                                  //   size: 28,
-                                  //   color: Color(0xFFFFDA55),
-                                  // ),
-                                  // Icon(
-                                  //   Icons.star_border_outlined,
-                                  //   size: 28,
-                                  //   color: Color(0xFFFFDA55),
-                                  // ),
                                 ],
                               ),
                             ),
                           ),
                           Container(
-                            // height: MediaQuery.of(context).size.height * 0.38,
                             width: MediaQuery.of(context).size.width * 0.8,
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -332,13 +252,11 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                             padding: EdgeInsets.only(
                                 left: 30, top: 34, bottom: 34, right: 30),
                             child: Column(
-                              // mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   child: Text(
                                     'Name : ${allFlashcard.getNameById(widget.flashcard_id)}',
-                                    // 'Name : Number Addition',
                                     style: GoogleFonts.montserrat(
                                       textStyle: TextStyle(
                                           color: Color(0xFF6C76C7),
@@ -351,7 +269,6 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                   margin: EdgeInsets.only(top: 20),
                                   child: Text(
                                     'By : ${allFlashcard.getOwnerNameById(widget.flashcard_id)}',
-                                    // 'By : Dr.Peil Foden',
                                     style: GoogleFonts.montserrat(
                                       textStyle: TextStyle(
                                           color: Color(0xFF6C76C7),
@@ -360,23 +277,10 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                     ),
                                   ),
                                 ),
-                                // Container(
-                                //   margin: EdgeInsets.only(top: 20),
-                                //   child: Text(
-                                //     'Topic : Numeric',
-                                //     style: GoogleFonts.montserrat(
-                                //       textStyle: TextStyle(
-                                //           color: Color(0xFF6C76C7),
-                                //           fontSize: 18.0,
-                                //           fontWeight: FontWeight.w400),
-                                //     ),
-                                //   ),
-                                // ),
                                 Container(
                                   margin: EdgeInsets.only(top: 20),
                                   child: Text(
                                     'Catagory : ${allFlashcard.getCategoryById(widget.flashcard_id)}',
-                                    // 'Category : Math',
                                     style: GoogleFonts.montserrat(
                                       textStyle: TextStyle(
                                           color: Color(0xFF6C76C7),
@@ -389,7 +293,6 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                   margin: EdgeInsets.only(top: 20),
                                   child: Text(
                                     'Description : ${allFlashcard.getDescriptionById(widget.flashcard_id)}',
-                                    // 'Description : This flashcard will teach you about basic of number addition',
                                     style: GoogleFonts.montserrat(
                                       textStyle: TextStyle(
                                           color: Color(0xFF6C76C7),
@@ -427,7 +330,6 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                     ],
                                   ),
                                   child: Container(
-                                      // padding: EdgeInsets.only(left: 0, right: 10),
                                       child: Text(
                                     'Play flashcard',
                                     style: GoogleFonts.montserrat(
@@ -440,6 +342,9 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                   )),
                                 ),
                                 onTap: () {
+                                  if (!user.isStudied(widget.flashcard_id)) {
+                                    user.addStudied(widget.flashcard_id);
+                                  }
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -472,7 +377,6 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                     ],
                                   ),
                                   child: Container(
-                                      // padding: EdgeInsets.only(left: 0, right: 10),
                                       child: Text(
                                     'Take the test',
                                     style: GoogleFonts.montserrat(
@@ -498,7 +402,6 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                           ),
                           GestureDetector(
                             child: Container(
-                              // height: MediaQuery.of(context).size.height * 0.38,
                               width: MediaQuery.of(context).size.width * 0.8,
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -520,13 +423,12 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
-                                    // mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         child: Text(
-                                          'Rating  ${(allFlashcard.getRatingById(widget.flashcard_id) * 2).toStringAsFixed(1)} / 10',
+                                          'Rating  ${(allFlashcard.getRatingById(widget.flashcard_id) * 2).round()} / 10',
                                           style: GoogleFonts.montserrat(
                                             textStyle: TextStyle(
                                                 color: Color(0xFF6C76C7),
@@ -553,7 +455,6 @@ class _FlashcardDetailsState extends State<FlashcardDetails> {
                                     padding: EdgeInsets.only(bottom: 10),
                                     child: IconButton(
                                         icon: Icon(
-                                          // widget.fav ? Icons.favorite :
                                           Icons.navigate_next_rounded,
                                           size: 40,
                                           color: Color(0xFFCECECE),

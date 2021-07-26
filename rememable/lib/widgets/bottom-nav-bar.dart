@@ -36,8 +36,6 @@ class BottomNavBar extends StatelessWidget {
                           color: Color(0xFFBFBFBF),
                         ),
                   label: "",
-                  // title: Text("Instructors",
-                  //     style: TextStyle(fontSize: 11, color: Color(0xFFDAC5F8)))
                 ),
                 BottomNavigationBarItem(
                   icon: selectedTabIndex == 1
@@ -52,8 +50,6 @@ class BottomNavBar extends StatelessWidget {
                           color: Color(0xFFBFBFBF),
                         ),
                   label: "",
-                  // title: Text("Favorite",
-                  //     style: TextStyle(fontSize: 11, color: Color(0xFFDAC5F8)))
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
@@ -62,8 +58,6 @@ class BottomNavBar extends StatelessWidget {
                     color: Color(0xFFBFBFBF),
                   ),
                   label: "",
-                  // title: Text("Calendar",
-                  //     style: TextStyle(fontSize: 11, color: Color(0xFFDAC5F8)))
                 ),
                 BottomNavigationBarItem(
                   icon: selectedTabIndex == 3
@@ -78,8 +72,6 @@ class BottomNavBar extends StatelessWidget {
                           color: Color(0xFFBFBFBF),
                         ),
                   label: "",
-                  // title: Text("Instructors",
-                  //     style: TextStyle(fontSize: 11, color: Color(0xFF8675A9)))
                 ),
               ],
             ),

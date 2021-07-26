@@ -19,7 +19,6 @@ class PreHome extends StatefulWidget {
 
 class _PreHomeState extends State<PreHome> with SingleTickerProviderStateMixin {
   int _selectedTabIndex = 0;
-  // int delayTime = 0;
 
   @override
   _changeIndex(int index) {

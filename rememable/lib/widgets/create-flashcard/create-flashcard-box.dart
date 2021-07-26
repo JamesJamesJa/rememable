@@ -4,16 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CreateFlashcardBox extends StatefulWidget {
   final int index;
-  // final List<TextEditingController> term;
   final Function changeTerm;
-  // final List<TextEditingController> definition;
   final Function changeDefinition;
   const CreateFlashcardBox({
     Key key,
     this.index,
-    // this.term,
     this.changeTerm,
-    // this.definition,
     this.changeDefinition,
   }) : super(key: key);
   @override
@@ -73,23 +69,7 @@ class _CreateFlashcardBoxState extends State<CreateFlashcardBox> {
                       onEditingComplete: () {
                         print(termTemp.text);
                       },
-                      onChanged: (String value) {
-                        // print(termTemp.text);
-                        //   setState(() {
-                        //     term[index - 1].text =
-                        //         value;
-                        //     // termTemp[index - 1]
-                        //     //         .selection =
-                        //     //     TextSelection.fromPosition(
-                        //     //         TextPosition(
-                        //     //             offset: termTemp[
-                        //     //                     index - 1]
-                        //     //                 .text
-                        //     //                 .length));
-                        //     // termTemp[index - 1].text =
-                        //     //     value;
-                        //   });
-                      },
+                      onChanged: (String value) {},
                     ),
                   ),
                 ),
@@ -133,11 +113,7 @@ class _CreateFlashcardBoxState extends State<CreateFlashcardBox> {
                             EdgeInsets.only(top: 20.0, left: 2, right: 2),
                         border: InputBorder.none,
                       ),
-                      onChanged: (String value) {
-                        // setState(() {
-                        //   definition[index - 1].text = value;
-                        // });
-                      },
+                      onChanged: (String value) {},
                     ),
                   ),
                 ),

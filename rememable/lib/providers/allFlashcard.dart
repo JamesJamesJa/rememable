@@ -234,14 +234,7 @@ class AllFlashcard with ChangeNotifier {
     final response = await http.get(
         Uri.parse('https://rememable.herokuapp.com${getImagePathById(id)}'));
 
-    // final documentDirectory = await getApplicationDocumentsDirectory();
-
-    // final file = File(join(documentDirectory.path, 'imagetest.png'));
-    // // 'rememable.herokuapp.com${getImagePathById(id)}', 'imagetest.png'));
-
-    // file.writeAsBytesSync(response.bodyBytes);
     Directory _appDocsDir = await getTemporaryDirectory();
-    // print(_appDocsDir.toString());
     File fileFromDocsDir(String filename) {
       String pathName = p.join(_appDocsDir.path, filename);
       return File(pathName);
@@ -251,19 +244,12 @@ class AllFlashcard with ChangeNotifier {
 
     file.writeAsBytesSync(response.bodyBytes);
     return file;
-
-    // return NetworkToFileImage(
-    //   url: 'https://rememable.herokuapp.com${getImagePathById(id)}',
-    //   file: fileFromDocsDir("flutter.png"),
-    //   debug: true,
-    // );
   }
 
   Future<void> deleteFlashcardDB(String id) async {
     try {
       final res = await http.delete(
           Uri.parse('https://rememable.herokuapp.com/flashcards/${id}'));
-      // final data = jsonDecode(res.body);
       notifyListeners();
     } catch (err) {
       return throw (err);
@@ -293,8 +279,6 @@ class AllFlashcard with ChangeNotifier {
               headers: {'Content-type': 'application/json'}, body: jsonReview)
           .then((value) async {
         final data = jsonDecode(value.body);
-        // print(
-        //     "ID = ${data['id']} ${data['rating']} ${data['comment']} ${data['owner_name']}");
         int indexTemp;
         for (var i = 0; i < _flashcard.length; i++) {
           if (_flashcard[i].id == id) {
@@ -324,21 +308,20 @@ class AllFlashcard with ChangeNotifier {
         );
         _flashcard.removeAt(indexTemp);
         _flashcard.insert(indexTemp, flashcardTemp);
-        // print(_flashcard[indexTemp].rating);
-        // print(_flashcard[indexTemp].reviewAmount);
         String reviewListTemp = "";
         for (var i = 0; i < _flashcard[indexTemp].reviewListId.length; i++) {
           reviewListTemp += "\"${_flashcard[indexTemp].reviewListId[i].id}\", ";
         }
-        reviewListTemp.substring(0, reviewListTemp.length - 2);
+        reviewListTemp = reviewListTemp.substring(0, reviewListTemp.length - 2);
         String jsonTemp =
             "{\"rating\": ${_flashcard[indexTemp].rating}, \"review_amount\": ${_flashcard[indexTemp].reviewAmount}, \"review_list\": {\"data\": [${reviewListTemp}]}}";
-        // print(jsonTemp);
         var responseUpdateFlashcard = await http
             .put(Uri.parse('https://rememable.herokuapp.com/flashcards/${id}'),
                 headers: {'Content-type': 'application/json'}, body: jsonTemp)
             .then((value) async {
           final data = jsonDecode(value.body);
+          setRatingIndex();
+          notifyListeners();
         });
       });
     } catch (err) {
@@ -352,11 +335,9 @@ class AllFlashcard with ChangeNotifier {
       String category,
       String description,
       File cover_image,
-      // String owner_flashcard_name,
       List<String> term,
       List<String> definition) async {
     try {
-      // String idTemp = "";
       List<Question> allQuestion = [];
       String cover_image_url = "";
       String jsonQuestionId = "[";
@@ -411,12 +392,9 @@ class AllFlashcard with ChangeNotifier {
               .then((value) async {
             final data = jsonDecode(value.body);
 
-            // flashcardDetails();
-            // final data = jsonDecode(value.body);
             int indexTemp;
             for (var i = 0; i < _flashcard.length; i++) {
               if (_flashcard[i].id == id) {
-                // _flashcard[i].name = flashcard_name;
                 indexTemp = i;
               }
             }
@@ -452,7 +430,6 @@ class AllFlashcard with ChangeNotifier {
       List<String> term,
       List<String> definition) async {
     try {
-      // String idTemp = "";
       List<Question> allQuestion = [];
       String cover_image_url = "";
       String jsonQuestionId = "[";
@@ -506,7 +483,6 @@ class AllFlashcard with ChangeNotifier {
                   headers: {'Content-type': 'application/json'}, body: jsonTemp)
               .then((value) async {
             final data = jsonDecode(value.body);
-            // idTemp = data['id'];
             _flashcard.add(new Flashcard(
               id: data['id'],
               name: data['flashcard_name'],
@@ -521,9 +497,7 @@ class AllFlashcard with ChangeNotifier {
             ));
             setRatingIndex();
             notifyListeners();
-            // print("DATA:ID:${data['id']}");
             return "data['id']";
-            // return _flashcard[_flashcard.length - 1].id;
           });
         });
       });
@@ -548,7 +522,6 @@ class AllFlashcard with ChangeNotifier {
       final dataQuestions = jsonDecode(resQuestions.body);
 
       // Get All Review from DB
-      // List<Review> allReview = [];
       for (int i = 0; i < dataReviews.length; i++) {
         _review.add(new Review(
           id: dataReviews[i]['id'],
@@ -559,7 +532,6 @@ class AllFlashcard with ChangeNotifier {
       }
 
       // Get All Review from DB
-      // List<Question> allQuestion = [];
       for (int i = 0; i < dataQuestions.length; i++) {
         _question.add(new Question(
             id: dataQuestions[i]['id'],
@@ -576,19 +548,8 @@ class AllFlashcard with ChangeNotifier {
             if (_question[k].id == data[i]['question_list']['data'][j]) {
               questionList.add(_question[k]);
             }
-            // questionList.add(new Question(
-            //   id: data[i]['question_list'][j]['id'],
-            //   question: data[i]['question_list'][j]['question'],
-            //   answer: data[i]['question_list'][j]['answer'],
-            // ));
           }
         }
-
-        // // Get Favorite Owner ID Loop     // Not use
-        // List<String> favOwner = [];
-        // for (int j = 0; j < data[i]['fav_owner'].length; j++) {
-        //   favOwner.add(data[i]['fav_owner'][j]['id']);
-        // }
 
         // Get List of Review ID Loop
         List<Review> reviewList = [];
@@ -598,36 +559,20 @@ class AllFlashcard with ChangeNotifier {
               reviewList.add(_review[k]);
             }
           }
-          // reviewList.add(new Review(     // Not use
-          //   id: data[i]['review_list'][j]['id'],
-          //   flashcardOwnerName: data[i]['review_list'][j]['user_id'],
-          //   comment: data[i]['review_list'][j]['comment'],
-          //   rating: data[i]['review_list'][j]['rating'],
-          // ));
         }
-
-        // // Get List of Studied Flashcard ID Loop     // Not use
-        // List<String> studiedFlashcardId = [];
-        // for (int j = 0; j < data[i]['studied_flashcard'].length; j++) {
-        //   studiedFlashcardId.add(data[i]['studied_flashcard'][j]['id']);
-        // }
 
         switch (data[i]['category']) {
           case 'Math':
             mathAmount++;
-            // print('Math ${mathAmount}');
             break;
           case 'Science':
             scienceAmount++;
-            // print('Science ${scienceAmount}');
             break;
           case 'Language':
             languageAmount++;
-            // print('Language ${languageAmount}');
             break;
           case 'Coding':
             codingAmount++;
-            // print('Coding ${codingAmount}');
             break;
           default:
             break;

@@ -23,16 +23,8 @@ class EditFlashcard extends StatefulWidget {
 
 class _EditFlashcardState extends State<EditFlashcard>
     with SingleTickerProviderStateMixin {
-  List<TextEditingController> term = [
-    // TextEditingController(),
-    // TextEditingController(),
-    // TextEditingController()
-  ];
-  List<TextEditingController> definition = [
-    // TextEditingController(),
-    // TextEditingController(),
-    // TextEditingController()
-  ];
+  List<TextEditingController> term = [];
+  List<TextEditingController> definition = [];
   var titleController = TextEditingController();
   var descriptionController = TextEditingController();
 
@@ -45,12 +37,9 @@ class _EditFlashcardState extends State<EditFlashcard>
     PickedFile pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
     );
-    // if (pickedFile != null) {
     setState(() {
       imageFile = File(pickedFile.path);
-      // print(pickedFile.path);
     });
-    // }
   }
 
   // Get image from Camera
@@ -66,13 +55,6 @@ class _EditFlashcardState extends State<EditFlashcard>
       });
     }
   }
-
-  // setLength(int newLength) {
-  //   setState(() {
-  //     flashcardLength = newLength;
-  //     print(flashcardLength);
-  //   });
-  // }
 
   @override
   void initState() {
@@ -90,7 +72,6 @@ class _EditFlashcardState extends State<EditFlashcard>
       definition.add(TextEditingController(
           text: provider.getAnswerByIndex(widget.flashcard_id, i)));
     }
-    // imageFile =
     provider
         .getImageFileFromId(widget.flashcard_id)
         .asStream()
@@ -99,7 +80,6 @@ class _EditFlashcardState extends State<EditFlashcard>
         imageFile = element;
       });
     });
-    // print(flashcardLength);
 
     super.initState();
   }
@@ -114,11 +94,9 @@ class _EditFlashcardState extends State<EditFlashcard>
               ? Center(
                   child: LoadingBouncingGrid.square(
                     borderColor: Color(0xffF1E25C),
-                    // borderColor: Color(0xff749BFF),
                     borderSize: 3.0,
                     size: 100.0,
                     backgroundColor: Color(0xffF1E25C),
-                    // backgroundColor: Color(0xff749BFF),
                     duration: Duration(milliseconds: 1200),
                   ),
                 )
@@ -172,21 +150,12 @@ class _EditFlashcardState extends State<EditFlashcard>
                             ),
                           ),
                           onTap: () {
-                            // print(imageFile);
-                            // print("\n");
-                            // print(imageFile.path);
                             List<String> question = [];
                             List<String> answer = [];
                             for (int i = 0; i < term.length; i++) {
                               question.add(term[i].text);
                               answer.add(definition[i].text);
-                              // print("Question: ${question}");
-                              // print("Answer: ${answer}");
                             }
-                            // print(term.length);
-                            // List<int> imageBytes = imageFile.readAsBytesSync();
-                            // String base64Image = BASE64.encode(imageBytes);
-                            // File.fromRawPath(Uint8List uint8List)
                             setState(() {
                               loading = true;
                             });
@@ -197,19 +166,13 @@ class _EditFlashcardState extends State<EditFlashcard>
                                     categoryDropdown,
                                     descriptionController.text,
                                     imageFile,
-                                    // user.getName(),
                                     question,
                                     answer)
                                 .then((value) {
                               Future.delayed(const Duration(milliseconds: 5000),
                                   () {
-                                // setState(() {
-                                //   loading = false;
-                                // });
                                 Navigator.pop(context);
                               });
-
-                              // Navigator.pop(context);
                             });
                           },
                         ),
@@ -218,26 +181,16 @@ class _EditFlashcardState extends State<EditFlashcard>
                   ),
                   Container(
                       height: MediaQuery.of(context).size.height * 0.79,
-                      // color: Color(0xFFFAFAFA), //More grey
-                      color: Color(0xFFFEFEFE), //Fucking little grey
+                      color: Color(0xFFFEFEFE),
                       child: ListView.builder(
                           padding: EdgeInsets.only(top: 0),
                           scrollDirection: Axis.vertical,
                           itemCount: 1 + flashcardLength,
                           itemBuilder: (ctx, index) {
-                            // if (index != 0) {
-                            //   term.add(TextEditingController());
-                            //   // termTemp.add(TextEditingController());
-
-                            //   definition.add(TextEditingController());
-                            //   // definitionTemp.add(TextEditingController());
-                            // }
-
                             return (index == 0)
                                 ? Container(
                                     height: MediaQuery.of(context).size.height *
                                         0.44,
-                                    // color: Colors.white,
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -306,16 +259,6 @@ class _EditFlashcardState extends State<EditFlashcard>
                                             }).toList(),
                                           ),
                                         ),
-                                        // FDottedLine(
-                                        //   color: Colors.lightBlue[600],
-                                        //   height: 100.0,
-                                        //   width: 50,
-                                        //   strokeWidth: 2.0,
-                                        //   dottedLength: 10.0,
-                                        //   space: 2.0,
-                                        //   child: ,
-                                        // ),
-
                                         GestureDetector(
                                           child: imageFile == null
                                               ? Container(
@@ -399,7 +342,6 @@ class _EditFlashcardState extends State<EditFlashcard>
                                                     .size
                                                     .width *
                                                 0.8,
-                                            // margin: EdgeInsets.only(top: 20),
                                             child: TextField(
                                               controller: titleController,
                                               decoration: InputDecoration(
@@ -419,11 +361,6 @@ class _EditFlashcardState extends State<EditFlashcard>
                                                     right: 2),
                                                 border: InputBorder.none,
                                               ),
-                                              // onChanged: (String value) {
-                                              //   setState(() {
-                                              //     titleController.text = value;
-                                              //   });
-                                              // },
                                             ),
                                           ),
                                         ),
@@ -479,12 +416,6 @@ class _EditFlashcardState extends State<EditFlashcard>
                                                     right: 2),
                                                 border: InputBorder.none,
                                               ),
-                                              // onChanged: (String value) {
-                                              //   setState(() {
-                                              //     descriptionController.text =
-                                              //         value;
-                                              //   });
-                                              // },
                                             ),
                                           ),
                                         ),
@@ -516,17 +447,10 @@ class _EditFlashcardState extends State<EditFlashcard>
                                       setState(() {
                                         flashcardLength--;
                                         term.removeAt(index - 1);
-                                        // termTemp.removeAt(index - 1);
                                         definition.removeAt(index - 1);
-                                        // definitionTemp.removeAt(index - 1);
                                       });
                                     },
-                                    child:
-                                        // CreateFlashcardBox(
-                                        //     index: index - 1,
-                                        //     changeTerm: changeTerm,
-                                        //     changeDefinition: changeDefinition)
-                                        Container(
+                                    child: Container(
                                       child: Column(
                                         children: [
                                           Container(
@@ -598,22 +522,7 @@ class _EditFlashcardState extends State<EditFlashcard>
                                                             InputBorder.none,
                                                       ),
                                                       onChanged:
-                                                          (String value) {
-                                                        //   setState(() {
-                                                        //     term[index - 1].text =
-                                                        //         value;
-                                                        //     // termTemp[index - 1]
-                                                        //     //         .selection =
-                                                        //     //     TextSelection.fromPosition(
-                                                        //     //         TextPosition(
-                                                        //     //             offset: termTemp[
-                                                        //     //                     index - 1]
-                                                        //     //                 .text
-                                                        //     //                 .length));
-                                                        //     // termTemp[index - 1].text =
-                                                        //     //     value;
-                                                        //   });
-                                                      },
+                                                          (String value) {},
                                                     ),
                                                   ),
                                                 ),
@@ -680,16 +589,8 @@ class _EditFlashcardState extends State<EditFlashcard>
                                                         border:
                                                             InputBorder.none,
                                                       ),
-                                                      // onSubmitted: (value) {
-                                                      //   print("asd");
-                                                      // },
                                                       onChanged:
-                                                          (String value) {
-                                                        // setState(() {
-                                                        //   definition[index - 1]
-                                                        //       .text = value;
-                                                        // });
-                                                      },
+                                                          (String value) {},
                                                     ),
                                                   ),
                                                 ),
@@ -720,9 +621,7 @@ class _EditFlashcardState extends State<EditFlashcard>
                                           ),
                                         ],
                                       ),
-                                    )
-                                    // FlashcardBox()
-                                    );
+                                    ));
                           })),
                   Container(
                     height: MediaQuery.of(context).size.height * 0.09,
@@ -751,10 +650,6 @@ class _EditFlashcardState extends State<EditFlashcard>
 
                           flashcardLength++;
                         });
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => CreateFlashcard()));
                       },
                     ),
                   )

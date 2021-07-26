@@ -36,24 +36,20 @@ class _ReviewState extends State<Review> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    // List<Flashcard> allFlashcard = Provider.of<AllFlashcard>(context).flashcard;
     return Scaffold(body: Consumer2<AllFlashcard, Authen>(
         builder: (context, allFlashcard, user, child) {
       return isLoading
           ? Center(
               child: LoadingBouncingGrid.square(
                 borderColor: Color(0xff79EFA8),
-                // borderColor: Color(0xff749BFF),
                 borderSize: 3.0,
                 size: 100.0,
                 backgroundColor: Color(0xff79EFA8),
-                // backgroundColor: Color(0xff749BFF),
                 duration: Duration(milliseconds: 1200),
               ),
             )
           : Container(
               height: MediaQuery.of(context).size.height,
-              // height: MediaQuery.of(context).size.height * 0.91,
               color: Color(0xFFFAFAFA),
               child: Column(
                 children: [
@@ -62,7 +58,6 @@ class _ReviewState extends State<Review> with SingleTickerProviderStateMixin {
                     width: MediaQuery.of(context).size.width,
                     color: Color(0xFF749BFF),
                     child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Container(
                           height: MediaQuery.of(context).size.height * 0.12,
@@ -83,11 +78,7 @@ class _ReviewState extends State<Review> with SingleTickerProviderStateMixin {
                           padding: EdgeInsets.only(top: 40),
                           child: Center(
                             child: Text(
-                              // '${allFlashcard.getNameById(widget.flashcard_id)}',
                               'Reviews',
-                              // allFlashcard.getNameById(widget.flashcard_id) == null
-                              //     ? 'Fuck'
-                              //     : allFlashcard.getNameById(widget.flashcard_id),
                               style: GoogleFonts.montserrat(
                                 textStyle: TextStyle(
                                     color: Colors.white,
@@ -120,7 +111,6 @@ class _ReviewState extends State<Review> with SingleTickerProviderStateMixin {
                             padding: EdgeInsets.only(bottom: 30, top: 50),
                             scrollDirection: Axis.vertical,
                             itemBuilder: (ctx, index) => (index == 0)
-                                // ? Container()
                                 ? ReviewDetail(
                                     flashcard_id: widget.flashcard_id,
                                     imagePath: allFlashcard.getImagePathById(
@@ -147,14 +137,7 @@ class _ReviewState extends State<Review> with SingleTickerProviderStateMixin {
                                         widget.flashcard_id, index - 1),
                                     review: allFlashcard.getCommentByIndex(
                                         widget.flashcard_id, index - 1),
-                                    // name: 'Jane Cooper',
-                                    // rating: 4,
-                                    // review:
-                                    //     'asdasdasdasdasdasdasdasdasdasdsdasdasdasdasdasdsdasdasdaasdasdasdasdasdasdasdasdasdasd',
                                   ),
-                            // : FlashcardBox(
-                            //     flashcard_id: allFlashcard[index - 1].id,
-                            //     index: index - 1),
                             itemCount: 1 +
                                 allFlashcard
                                     .getReviewLength(widget.flashcard_id))),
